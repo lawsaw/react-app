@@ -33,26 +33,32 @@ export default class extends Component {
 
     validate = (type, value) => {
 
-        if(!value.length) { return null; }
+        if (!value.length) return null;
 
-        switch(type) {
-            case 'name':
-                if(
-                    value.indexOf('fuck') >= 0 ||
-                    value.indexOf('huy') >= 0
-                ) {
-                    return false
-                }
-                break;
-            case 'email':
-                if(
-                    value.indexOf('@') == -1
-                ) {
-                    return false
-                }
-                break;
-        }
-        return true
+        let rules = {
+            name: (value) => !(value.indexOf('fuck') >= 0 || value.indexOf('huy') >= 0 ),
+            email: (value) => !(value.indexOf('@') === -1)
+        };
+
+        // switch(type) {
+        //     case 'name':
+        //         if(
+        //             value.indexOf('fuck') >= 0 ||
+        //             value.indexOf('huy') >= 0
+        //         ) {
+        //             return false
+        //         }
+        //         break;
+        //     case 'email':
+        //         if(
+        //             value.indexOf('@') == -1
+        //         ) {
+        //             return false
+        //         }
+        //         break;
+        // }
+        return rules[type](value)
+        // return true
 
     }
 

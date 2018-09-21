@@ -2,52 +2,33 @@ import React, { Component } from 'react'
 import List from './List'
 import Search from './Search'
 import Add from './Add'
+import { apiRequest, delay } from '../helpers.js'
 
 export default class extends Component {
 
 
     state = {
         searchText: '',
-        list: [
-            {
-                title: 'Новости политики',
-                shortContent: 'Жили были президенты...',
-                longContent: 'Это полная версия текста про Жили были президенты...'
-            },
-            {
-                title: 'Новости финансов',
-                shortContent: 'Денег нет и не будет...',
-                longContent: 'Это полная версия текста про Денег нет и не будет...'
-            },
-            {
-                title: 'Новости экономики',
-                shortContent: 'Экономия должна быть во всем...',
-                longContent: 'Это полная версия текста про Экономия должна быть во всем...'
-            }
-        ]
+        list: null
     }
 
-    // componentWillMount() {
-    //     this.setState(() => ({
-    //         list: [
-    //             {
-    //                 title: 'Новости политики',
-    //                 shortContent: 'Жили были президенты...',
-    //                 longContent: 'Это полная версия текста про Жили были президенты...'
-    //             },
-    //             {
-    //                 title: 'Новости финансов',
-    //                 shortContent: 'Денег нет и не будет...',
-    //                 longContent: 'Это полная версия текста про Денег нет и не будет...'
-    //             },
-    //             {
-    //                 title: 'Новости экономики',
-    //                 shortContent: 'Экономия должна быть во всем...',
-    //                 longContent: 'Это полная версия текста про Экономия должна быть во всем...'
-    //             }
-    //         ]
-    //     }))
-    // }
+    componentDidMount() {
+
+        apiRequest('GET','./data/list.json')
+            .then (
+                data => {
+                    return delay(data, 3000)
+                }
+            )
+            .then(
+                data => {
+                    this.setState(() => ({
+                        list: data
+                    }))
+                }
+            )
+
+    }
 
     handleAdd = (item) => {
         this.setState(
