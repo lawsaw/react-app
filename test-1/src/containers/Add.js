@@ -17,8 +17,8 @@ export default class extends Component {
         }
     }
 
-    handleChange = (key, value) => {
-        let newValue = key != 'agree' ? this.validate(value) : value;
+    handleChange = (type, key, value) => {
+        let newValue = type != 'checkbox' ? this.validate(type, value) : value;
         this.setState((state) => ({
             field: {
                 ...state.field,
@@ -31,41 +31,29 @@ export default class extends Component {
         }))
     }
 
-    validate = (value) => {
-        let rules = {
-            error: [
-                () => {
-                    return value.indexOf('fuck') >= 0
-                },
-                () => {
-                    return value.indexOf('huy') >= 0
+    validate = (type, value) => {
+
+        if(!value.length) { return null; }
+
+        switch(type) {
+            case 'name':
+                if(
+                    value.indexOf('fuck') >= 0 ||
+                    value.indexOf('huy') >= 0
+                ) {
+                    return false
                 }
-            ],
-            correct: [
-                () => {
-                    return value.length > 5;
+                break;
+            case 'email':
+                if(
+                    value.indexOf('@') == -1
+                ) {
+                    return false
                 }
-            ]
-        };
-        let runValidation = (
-            () => {
-                let result = null;
-                rules.correct.forEach((rule) => {
-                    if (rule()) {
-                        result = true;
-                        return;
-                    }
-                });
-                rules.error.forEach((rule) => {
-                    if (rule()) {
-                        result = false;
-                        return;
-                    }
-                });
-                return result;
-            }
-        )();
-        return runValidation;
+                break;
+        }
+        return true
+
     }
 
     handleSubmit = (e) => {
@@ -80,19 +68,7 @@ export default class extends Component {
     }
 
     setValidClass = (rule) => {
-        let className = '';
-        switch (rule) {
-            case true:
-                className = 'is-valid';
-                break;
-            case false:
-                className = 'is-invalid';
-                break
-            default:
-                className = '';
-                break;
-        }
-        return className;
+        return rule === true ? 'is-valid' : rule === false ? 'is-invalid' : ''
     }
 
     renderAdd = () => {
@@ -109,7 +85,7 @@ export default class extends Component {
                             <input
                                 type='text'
                                 className={`form-control ${this.setValidClass(validTitle)}`}
-                                onChange={e => {this.handleChange('title', e.currentTarget.value)}}
+                                onChange={e => {this.handleChange('email', 'title', e.currentTarget.value)}}
                             />
                         </div>
                     </div>
@@ -118,7 +94,7 @@ export default class extends Component {
                             <p>Короткое описание</p>
                             <textarea
                                 className={`form-control ${this.setValidClass(validShortContent)}`}
-                                onChange={e => {this.handleChange('shortContent', e.currentTarget.value)}}
+                                onChange={e => {this.handleChange('name', 'shortContent', e.currentTarget.value)}}
                             ></textarea>
                         </div>
                     </div>
@@ -127,14 +103,14 @@ export default class extends Component {
                             <p>Полное описание</p>
                             <textarea
                                 className={`form-control ${this.setValidClass(validLongContent)}`}
-                                onChange={e => {this.handleChange('longContent', e.currentTarget.value)}}
+                                onChange={e => {this.handleChange('name', 'longContent', e.currentTarget.value)}}
                             ></textarea>
                         </div>
                     </div>
                     <div className='row'>
                         <div className='col'>
                             <label>
-                                <input type='checkbox' onChange={e => {this.handleChange('agree', e.currentTarget.checked)}} />
+                                <input type='checkbox' onChange={e => {this.handleChange('checkbox', 'agree', e.currentTarget.checked)}} />
                                 Я согласен со всеми
                             </label>
                         </div>
