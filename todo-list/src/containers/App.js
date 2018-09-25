@@ -36,27 +36,21 @@ export default class extends React.Component {
 
     deleteTask = (id) => {
         let { listItems } = this.state;
-        let listItemsNew = [];
-        listItems.filter((item) => {
-            if(item.id != id) {
-                listItemsNew.push(item)
-            }
-        });
+        let listItemsNew = listItems.filter((item) => (
+            item.id != id
+        ));
         this.setState((state) => ({
             listItems: listItemsNew
         }))
     }
 
     setDone = (id) => {
-        let { listItems } = this.state;
-        let filter = listItems.map((item) => {
-            item.done = item.id == id ? !item.done : item.done;
-            this.setState((state) => ({
-                listItems: [
-                    ...this.state.listItems
-                ]
-            }))
-        });
+        let list = this.state.listItems.map(item => ({...item}));
+        let row = list.find(el => el.id == id);
+        row.done = !row.done;
+        this.setState((state) => ({
+            listItems: list
+        }))
     }
 
     render() {
