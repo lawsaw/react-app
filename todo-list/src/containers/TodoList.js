@@ -3,11 +3,24 @@ import TodoListItem from './TodoListItem';
 
 export default class extends React.Component {
 
+    getMaxId = () => {
+        let { list } = this.props;
+        let max = 0;
+        list.forEach((item) => {
+            if( item.id > max ) {
+                max = item.id
+            }
+        })
+        return max;
+    }
+
     handleAdd = (e) => {
         let title = prompt('Введите название задачи'),
             description = prompt('Опишите подробности');
         if(!title || !description) return false;
+        let max = this.getMaxId();
         this.props.onAdd({
+            id: ++max,
             title: title,
             description: description,
             done: false
@@ -16,6 +29,7 @@ export default class extends React.Component {
 
     renderItem = () => {
         let { list } = this.props;
+        let max = this.getMaxId();
         return (
             list.map(({id, title, description, done} = list, index) => (
                 <TodoListItem

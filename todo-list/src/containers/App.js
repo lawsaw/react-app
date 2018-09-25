@@ -61,6 +61,7 @@ export default class extends React.Component {
 
     render() {
         let { listItems } = this.state;
+        console.log(listItems);
         return (
             <div className="app">
                 <h1>Список задач:</h1>

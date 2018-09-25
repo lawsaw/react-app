@@ -4,6 +4,7 @@ export default class extends React.Component {
 
     handleDone = () => {
         this.props.onDone(this.props.id);
+        console.log(this.props.id);
     }
 
     handleDelete = () => {
@@ -13,9 +14,9 @@ export default class extends React.Component {
     render() {
         let { id, title, description, done } = this.props;
         let doneClass = done ? 'todo-list-item--done' : '';
-        console.log(id);
+        //console.log(id);
         return (
-            <div className={`todo-list-item ${doneClass}`}>
+            <div id={id} className={`todo-list-item ${doneClass}`}>
                 <h3>{title}</h3>
                 <p>{description}</p>
 
