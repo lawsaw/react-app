@@ -5,25 +5,26 @@ export default class extends React.Component {
 
     state = {
         listItems: [
-            // {
-            //     id: 0,
-            //     title: 'Task1',
-            //     description: 'Let\'s do it right now',
-            //     done: false
-            // },
-            // {
-            //     id: 1,
-            //     title: 'Task2',
-            //     description: 'Let\'s do it tomorrow',
-            //     done: true
-            // },
-            // {
-            //     id: 2,
-            //     title: 'Task3',
-            //     description: 'Let\'s do it tomorrow',
-            //     done: true
-            // }
-        ]
+            {
+                id: 0,
+                title: 'Task1',
+                description: 'Let\'s do it right now',
+                done: false
+            },
+            {
+                id: 1,
+                title: 'Task2',
+                description: 'Let\'s do it tomorrow',
+                done: true
+            },
+            {
+                id: 2,
+                title: 'Task3',
+                description: 'Let\'s do it tomorrow',
+                done: false
+            }
+        ],
+        filter: 'all' //done, active
     }
 
     addTask = (value) => {
@@ -53,13 +54,44 @@ export default class extends React.Component {
         }))
     }
 
+    setFilter = (value) => {
+        this.setState((state) => ({
+            filter: value
+        }));
+    }
+
+    getFilteredData = () => {
+        let { listItems, filter } = this.state;
+        let listItemsNews;
+        switch(filter) {
+            case 'all':
+                listItemsNews = listItems;
+                break;
+            case 'done':
+                listItemsNews = listItems.filter(item => item.done == true);
+                break;
+            case 'active':
+                listItemsNews = listItems.filter(item => item.done != true);
+                break;
+            default:
+                listItemsNews = listItems;
+                break;
+        }
+        return listItemsNews;
+    }
+
     render() {
-        let { listItems } = this.state;
-        console.log(listItems);
+        let list = this.getFilteredData();
         return (
             <div className="app">
                 <h1>Список задач:</h1>
-                <TodoList list={listItems} onAdd={this.addTask} onDelete={this.deleteTask} onDone={this.setDone}  />
+                <TodoList
+                    list={list}
+                    onAdd={this.addTask}
+                    onDelete={this.deleteTask}
+                    onDone={this.setDone}
+                    setFilter={this.setFilter}
+                />
             </div>
         )
     }

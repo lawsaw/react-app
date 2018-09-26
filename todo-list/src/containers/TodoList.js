@@ -49,6 +49,13 @@ export default class extends React.Component {
         let items = this.renderItem();
         return (
             <React.Fragment>
+                <div className="row todo-header">
+                    <div className="col">
+                        <button onClick={() => this.props.setFilter('all')}>Все</button>
+                        <button onClick={() => this.props.setFilter('done')}>Выполненные</button>
+                        <button onClick={() => this.props.setFilter('active')}>Активные</button>
+                    </div>
+                </div>
                 <div className="todo-list">
                     {items}
                 </div>
