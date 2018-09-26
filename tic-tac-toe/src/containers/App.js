@@ -23,7 +23,6 @@ export default class extends React.Component {
         symbol: 'X'
     }
 
-
     copyDeep = (obj) => {
         let res;
         if(Array.isArray(obj)) {
@@ -48,6 +47,17 @@ export default class extends React.Component {
     togglePlayer = () => {
         let { symbol } = this.state;
         this.state.symbol = symbol == 'X' ? '0' : 'X';
+    }
+
+    resetGame = () => {
+        let { grid } = this.state;
+        let gridNew = this.copyDeep(grid);
+        gridNew.map(r => r.map(c => {
+            c.value = false;
+        }))
+        this.setState(() => ({
+            grid: gridNew
+        }));
     }
 
     isWinner = () => {
@@ -97,9 +107,11 @@ export default class extends React.Component {
         winners.forEach((comb) => {
             if(comb[0] !=false && comb[0] === comb[1] && comb[1] === comb[2]) {
                 alert(`Игрок с ${symbol} победил!`);
+                this.resetGame();
                 return comb;
             }
         })
+        return false;
     }
 
     getValue = (id) => {
@@ -132,6 +144,7 @@ export default class extends React.Component {
         }));
         this.isWinner();
         this.togglePlayer();
+
     }
 
     renderGrid = () => {
