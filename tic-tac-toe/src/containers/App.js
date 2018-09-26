@@ -58,6 +58,7 @@ export default class extends React.Component {
         this.setState(() => ({
             grid: gridNew
         }));
+        this.state.symbol = 'X';
     }
 
     isWinner = () => {
@@ -74,17 +75,27 @@ export default class extends React.Component {
             [3,5,7]
         ];
 
+        let value_1, value_2, value_3;
+
         winners.forEach((comb) => {
-            if(this.getValue(comb[0]) !=false && this.getValue(comb[0]) === this.getValue(comb[1]) && this.getValue(comb[1]) === this.getValue(comb[2])) {
+            value_1 = this.getValue(comb[0]);
+            value_2 = this.getValue(comb[1]);
+            value_3 = this.getValue(comb[2]);
+            if(value_1 !== false && value_1 === value_2 && value_2 === value_3) {
                 alert(`Игрок с ${symbol} победил!`);
                 this.resetGame();
                 return comb;
             }
         })
+        this.togglePlayer();
         return false;
     }
 
     getValue = (id) => {
+
+        // let {grid} = this.state;
+        // return grid[Math.floor(pos/3)][pos%3].value;
+
         let { grid } = this.state;
         let value;
         grid.forEach((row) => {
@@ -101,6 +112,7 @@ export default class extends React.Component {
         let { grid, symbol } = this.state;
         let gridNew = this.copyDeep(grid);
         let changedCell;
+
         gridNew.forEach((row) => {
             row.find((cell) => {
                 if (cell.id === id) {
@@ -108,12 +120,15 @@ export default class extends React.Component {
                 }
             })
         });
-        changedCell.value = changedCell.value == false ? symbol : changedCell.value;
+        changedCell.value = changedCell.value === false ? symbol : changedCell.value;
+
+        setTimeout(() => {
+            this.isWinner();
+        },100);
+
         this.setState(() => ({
             grid: gridNew
         }));
-        this.isWinner();
-        this.togglePlayer();
 
     }
 
