@@ -62,50 +62,20 @@ export default class extends React.Component {
 
     isWinner = () => {
         let { symbol } = this.state;
+
         let winners = [
-            [
-                this.getValue(1),
-                this.getValue(2),
-                this.getValue(3)
-            ],
-            [
-                this.getValue(4),
-                this.getValue(5),
-                this.getValue(6)
-            ],
-            [
-                this.getValue(7),
-                this.getValue(8),
-                this.getValue(9)
-            ],
-            [
-                this.getValue(1),
-                this.getValue(4),
-                this.getValue(7)
-            ],
-            [
-                this.getValue(2),
-                this.getValue(5),
-                this.getValue(8)
-            ],
-            [
-                this.getValue(3),
-                this.getValue(6),
-                this.getValue(9)
-            ],
-            [
-                this.getValue(1),
-                this.getValue(5),
-                this.getValue(9)
-            ],
-            [
-                this.getValue(3),
-                this.getValue(5),
-                this.getValue(7)
-            ]
+            [1,2,3],
+            [4,5,6],
+            [7,8,9],
+            [1,4,7],
+            [2,5,8],
+            [3,6,9],
+            [1,5,9],
+            [3,5,7]
         ];
+
         winners.forEach((comb) => {
-            if(comb[0] !=false && comb[0] === comb[1] && comb[1] === comb[2]) {
+            if(this.getValue(comb[0]) !=false && this.getValue(comb[0]) === this.getValue(comb[1]) && this.getValue(comb[1]) === this.getValue(comb[2])) {
                 alert(`Игрок с ${symbol} победил!`);
                 this.resetGame();
                 return comb;
