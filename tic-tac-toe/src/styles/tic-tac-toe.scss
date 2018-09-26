@@ -1,0 +1,63 @@
+$grid: (
+  'container': '.grid',
+  'size': 150,
+  'border': (
+    'size': 1,
+    'type': solid,
+    'color': grey,
+  )
+);
+
+
+#{map-get($grid, 'container')} {
+
+  &-row {
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+
+    &:not(:first-child) {
+
+      #{map-get($grid, 'container')}-cell {
+
+        border-top: #{map-get(map-get($grid, 'border'), 'size')}px #{map-get(map-get($grid, 'border'), 'type')} map-get(map-get($grid, 'border'), 'color');
+
+      }
+
+    }
+
+  }
+
+  &-cell {
+
+    height: #{map-get($grid, 'size')}px;
+    width: #{map-get($grid, 'size')}px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease 0s;
+    font-size: 85px;
+
+    &:not(:first-child) {
+
+      border-left: #{map-get(map-get($grid, 'border'), 'size')}px #{map-get(map-get($grid, 'border'), 'type')} map-get(map-get($grid, 'border'), 'color');
+
+    }
+
+    &:hover {
+
+      background-color: rgba(lightgreen, 0.2);
+      cursor: pointer;
+
+    }
+
+  }
+
+}
