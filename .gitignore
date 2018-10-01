@@ -5,7 +5,8 @@ origin/node_modules
 test-1/node_modules
 test-2/node_modules
 tic-tac-toe/node_modules
-todo-list/node_modules
+todo-list-redux-test/node_modules
+todo-list-redux/node_modules
 
 # testing
 /coverage
