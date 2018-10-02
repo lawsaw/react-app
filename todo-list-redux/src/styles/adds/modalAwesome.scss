@@ -1,0 +1,170 @@
+$modalAwesome: (
+  'container': '.modalAwesome',
+  'maxModals': 3
+);
+
+#{map-get($modalAwesome, 'container')} {
+
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow: hidden;
+
+  &-bg {
+
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(black, 0.3);
+
+    //animation-duration: 0.3s;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+    animation-delay: 0s;
+    animation-direction: normal;
+    animation-play-state: running;
+    animation-fill-mode: both;
+
+  }
+
+  &-close {
+
+    position: absolute;
+    right: 0;
+    top: 0;
+
+  }
+
+  &-win {
+
+    position: relative;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    width: 100%;
+
+    &-header {
+
+      padding: 20px;
+      text-transform: uppercase;
+      color: #fff;
+
+    }
+
+    &-body {
+
+      padding: 20px;
+      background-color: #fff;
+
+    }
+
+  }
+
+}
+
+
+@keyframes opacityIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+
+@keyframes opacityOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+
+#{map-get($modalAwesome, 'container')} {
+
+  &--appearing #{map-get($modalAwesome, 'container')}-bg { animation-name: opacityIn; }
+  &--disappearing #{map-get($modalAwesome, 'container')}-bg { animation-name: opacityOut; }
+
+
+
+  &--appearing #{map-get($modalAwesome, 'container')}-win {
+
+    transition: all 0s ease 0s;
+    transform-origin: center center;
+    transform: scale(0.5);
+    opacity: 0;
+
+  }
+
+  &--appearing#{map-get($modalAwesome, 'container')}--zoomIn #{map-get($modalAwesome, 'container')}-win {
+
+    transform: scale(1);
+    opacity: 1;
+
+  }
+
+
+
+
+
+
+  &--disappearing#{map-get($modalAwesome, 'container')}--toRight #{map-get($modalAwesome, 'container')}-win {
+
+    transform: translate3d(100%, 0, 0);
+    opacity: 0;
+
+  }
+
+}
+
+
+
+
+
+#{map-get($modalAwesome, 'container')} {
+
+  z-index: map_get($modalAwesome, 'maxModals');
+  transition: all 0.3s ease 0s;
+
+  & + & {
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    filter: blur(3px);
+    z-index: map_get($modalAwesome, 'maxModals')-1;
+
+    transform: scale( (map_get($modalAwesome, 'maxModals')-1) * 1 / map_get($modalAwesome, 'maxModals') );
+
+    //#{map-get($modalAwesome, 'container')}-win { transform: scale( (map_get($modalAwesome, 'maxModals')-1) * 1 / map_get($modalAwesome, 'maxModals') ); }
+
+  }
+
+  & + & + & {
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    filter: blur(3px);
+    z-index: map_get($modalAwesome, 'maxModals')-2;
+
+    transform: scale( (map_get($modalAwesome, 'maxModals')-2) * 1 / map_get($modalAwesome, 'maxModals') );
+
+    //#{map-get($modalAwesome, 'container')}-win { transform: scale( (map_get($modalAwesome, 'maxModals')-2) * 1 / map_get($modalAwesome, 'maxModals') ); }
+
+  }
+
+}
+
+
+
+

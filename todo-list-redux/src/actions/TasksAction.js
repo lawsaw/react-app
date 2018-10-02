@@ -2,12 +2,10 @@ export const ADD_TASK = 'ADD_TASK';
 export function addTask(id, title, short, full) {
     return {
         type: ADD_TASK,
-        payload: {
-            id: id,
-            title: title,
-            short: short,
-            full: full,
-        }
+        id,
+        title,
+        short,
+        full
     }
 }
 

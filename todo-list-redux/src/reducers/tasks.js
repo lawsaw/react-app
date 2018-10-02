@@ -28,13 +28,13 @@ export function taskReducer(state = initialState, action) {
 
     switch (action.type) {
         case ADD_TASK:
-            const { id, title, short, full } = action.payload;
+            const { id, title, short, full } = action;
             return [
                 {
-                    id: id,
-                    title: title,
-                    short: short,
-                    full: full,
+                    id,
+                    title,
+                    short,
+                    full,
                     completed: false
                 },
                 ...state

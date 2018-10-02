@@ -1,55 +1,33 @@
 import { ADD_USER } from "../actions/UserActions";
 
-const initialState = {
-    userList: [
-        {
-            name: 'Jack',
-            city: 'Kiev'
-        },
-        {
-            name: 'Ignat',
-            city: 'London'
-        },
-        {
-            name: 'Vasiliy',
-            city: 'New-York'
-        },
-    ]
-}
+const initialState = [
+    {
+        name: 'Jack',
+        city: 'Kiev'
+    },
+    {
+        name: 'Ignat',
+        city: 'London'
+    },
+    {
+        name: 'Vasiliy',
+        city: 'New-York'
+    },
+]
 
 export function userReducer(state = initialState, action) {
     switch (action.type) {
         case ADD_USER:
-
-            let newState = JSON.parse(JSON.stringify(state));
-
-            let c = {
-                userList: state.userList.map((item) => ({...item}))
-            }
-
-            let b = {
-                userList: [
-                    ...state.userList,
-                    {
-                        name: action.payload.name,
-                        city: action.payload.city,
-                    }
-                ],
-            };
-
-            let a = [
-                ...state.userList,
+            const { name, city } = action;
+            return [
                 {
-                    name: action.payload.name,
-                    city: action.payload.city,
-                }
-            ];
-            console.log(`a: ${a}`);
-            console.log(`b: ${b}`);
-            console.log(`c: ${c}`);
-            console.log(`newState: ${newState}`);
+                    name,
+                    city
+                },
+                ...state.map((user) => ({...user}))
+            ]
+            //let newState = JSON.parse(JSON.stringify(state));
 
-            return b;
         default:
             return state
     }

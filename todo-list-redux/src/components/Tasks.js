@@ -2,20 +2,8 @@ import React from 'react'
 
 export default class extends React.Component {
 
-    state = {
-        readMore: false
-    }
-
-    handleReadMore = (e) => {
-        e.preventDefault();
-        this.setState((state) => ({
-            readMore: !this.state.readMore
-        }))
-    }
-
     render() {
-        const { id, title, short, full, completed } = this.props;
-        const { readMore } = this.state;
+        const { id, title, short, full, completed, readMore } = this.props;
         return (
             <div className='list-group-item'>
                 <div className="d-flex w-100 justify-content-between">
@@ -31,12 +19,12 @@ export default class extends React.Component {
                             <span className="form-check-label">Готово</span>
                         </label>
                         {
-                            completed && <a href='#' onClick={(e) => this.props.handleDeleteTask(e, id)}>Удалить</a>
+                            completed && <a href='#' onClick={(e) => {e.preventDefault(); this.props.handleDeleteTask(id)}}>Удалить</a>
                         }
                     </div>
                 </div>
                 <p className='mb-1'>{short}</p>
-                <small><a href='#' onClick={this.handleReadMore}>Подробнее</a></small>
+                <small><a href='#' onClick={(e) => {e.preventDefault(); this.props.handleReadMore()}}>Подробнее</a></small>
                 {
                     readMore && <p>{full}</p>
                 }
