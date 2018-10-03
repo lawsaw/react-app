@@ -1,9 +1,9 @@
 import {ADD_MODAL, DELETE_MODAL} from "../actions/ModalsAction";
 
 const initialState = [
-    {
-        id: 0
-    }
+    // {
+    //     id: 0
+    // },
 ];
 
 export function modalReducer(state = initialState, action) {

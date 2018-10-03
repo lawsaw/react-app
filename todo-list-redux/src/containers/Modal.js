@@ -3,95 +3,95 @@ import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import {addModal, deleteModal} from "../actions/ModalsAction";
 
+const modalRoot = document.getElementById('modal-root');
 
 class Modal extends React.Component {
 
+    state = {
+        classStatus: '',
+        classStyle: '',
+        lock: false,
+    }
+
     constructor(props) {
         super(props);
-        this.modal = this.createModalContainer();
-        this.modalRoot = document.getElementById('modal-root');
-        this.delay = 750;
+        this.duration = 750;
     }
 
-    getMaxModalId = () => {
-        const { modals:list } = this.props;
-        return Math.max.apply(null, list.map((modal) => (
-            modal.id
-        )))
+    getLastModal = () => {
+        let { modals } = this.props;
+        return modals.length ? modals[0].id : 0;
     }
 
-    createModalContainer = () => {
-        this.modal = document.createElement('div');
-        this.modal.classList.add('modalAwesome');
-
-        let maxId = this.getMaxModalId();
-        let newId = ++maxId;
-
-        this.modal.setAttribute('id', newId);
+    upgradeStore = () => {
+        let lastId = this.getLastModal();
+        let newId = lastId+1;
         this.props.addModal(newId);
+        modalRoot.setAttribute('counter', newId);
+    }
 
-        console.log(this.props.modals);
-        console.log(this.getMaxModalId());
-        console.log(this.modal);
-
-        return this.modal;
+    downgradeStore = () => {
+        let lastId = this.getLastModal();
+        let newId = lastId-1;
+        this.props.deleteModal(lastId);
+        modalRoot.setAttribute('counter', newId);
     }
 
     componentDidMount() {
         const { styleAppear } = this.props;
-        const statusAppear = 'modalAwesome--appearing';
-
-        this.modal.classList.add(statusAppear);
-        this.modalRoot.insertBefore(this.modal, this.modalRoot.firstChild);
-
-        const promise = new Promise((resolve, reject) => {
+        this.setState(() => ({
+            classStatus: 'modalAwesome--appearing'
+        }));
+        setTimeout(() => {
+            this.setState(() => ({
+                classStyle: styleAppear
+            }));
             setTimeout(() => {
-                resolve();
-            }, 1)
-        });
+                this.setState(() => ({
+                    classStatus: '',
+                    classStyle: ''
+                }))
+            }, this.duration)
+        }, 1);
+        this.upgradeStore();
 
-        promise
-            .then(
-                () => {
-                    this.modal.classList.add(styleAppear);
-                    setTimeout(() => {
-                        this.modal.classList.remove(statusAppear, styleAppear);
-                    }, this.delay)
-                }
-            )
     }
 
-    closeModal = () => {
+    close = () => {
+
+        if(this.state.lock === true) {
+            console.log('locked');
+            return false;
+        }
+
+        this.setState(()=>({
+            lock: true
+        }));
 
         const { styleDisappear } = this.props;
-        const statusDisappear = 'modalAwesome--disappearing';
-        this.modal.classList.add(statusDisappear);
-        this.modal.classList.add(styleDisappear);
-
-        const promise = new Promise((resolve, reject) => {
-            setTimeout(() => {
-                this.modalRoot.removeChild(this.modal);
-                resolve();
-            }, this.delay);
-        });
-
-        promise
-            .then(
-                () => {
-                    this.props.handleHide();
-                    let maxId = this.getMaxModalId();
-                    this.props.deleteModal(maxId);
-                }
-            )
+        this.setState(() => ({
+            classStatus: 'modalAwesome--disappearing',
+            classStyle: styleDisappear,
+        }));
+        this.downgradeStore();
+        setTimeout(() => {
+            this.setState(() => ({
+                classStatus: '',
+                classStyle: ''
+            }));
+            this.props.handleHide();
+        }, this.duration);
     }
 
-    modalTemplate = () => {
+    template = () => {
         const { title } = this.props;
+        const { classStatus, classStyle } = this.state;
+
         return (
-            <React.Fragment>
-                <div className='modalAwesome-bg' style={{animationDuration: `${this.delay/1000/2}s`}}></div>
-                <button onClick={this.closeModal} className='modalAwesome-close'>Close</button>
-                <div className='modalAwesome-win' style={{transitionDuration: `${this.delay/1000}s`}}>
+            <div className={`modalAwesome ${classStatus} ${classStyle}`} style={{transitionDuration: `${this.duration/1000}s`}}>
+                <div className='modalAwesome-bg' style={{animationDuration: `${this.duration/1000/2}s`}}></div>
+                <button onClick={this.close} className='modalAwesome-close'>Close</button>
+                <div className='modalAwesome-win' style={{transitionDuration: `${this.duration/1000}s`}}>
                     <div className='modalAwesome-win-header'>
                         {title}
                     </div>
@@ -99,17 +99,131 @@ class Modal extends React.Component {
                         {this.props.children}
                     </div>
                 </div>
-            </React.Fragment>
+            </div>
         )
     }
 
     render() {
-
         return ReactDOM.createPortal(
-            this.modalTemplate(),
-            this.modal
+            this.template(),
+            modalRoot
         )
     }
+
+
+
+    // constructor(props) {
+    //     super(props);
+    //     this.modal = this.createModalContainer();
+    //     this.modalRoot = document.getElementById('modal-root');
+    //     this.delay = 1000;
+    // }
+    //
+    // getMaxModalId = () => {
+    //     const { modals:list } = this.props;
+    //     return Math.max.apply(null, list.map((modal) => (
+    //         modal.id
+    //     )))
+    // }
+    //
+    // createModalContainer = () => {
+    //     this.modal = document.createElement('div');
+    //     this.modal.classList.add('modalAwesome');
+    //     let maxId = this.getMaxModalId();
+    //     let newId = ++maxId;
+    //
+    //     this.modal.setAttribute('id', newId);
+    //     this.props.addModal(newId);
+    //
+    //     console.log(this.props.modals);
+    //     console.log(this.getMaxModalId());
+    //     console.log(this.modal);
+    //
+    //     return this.modal;
+    // }
+    //
+    // componentDidMount() {
+    //     const { styleAppear } = this.props;
+    //     const statusAppear = 'modalAwesome--appearing';
+    //
+    //     this.modal.style.transitionDuration = `${this.delay/1000}s`;
+    //
+    //     this.modal.classList.add(statusAppear);
+    //     this.modalRoot.insertBefore(this.modal, this.modalRoot.firstChild);
+    //
+    //     const promise = new Promise((resolve, reject) => {
+    //         setTimeout(() => {
+    //             resolve();
+    //         }, 1)
+    //     });
+    //
+    //     promise
+    //         .then(
+    //             () => {
+    //                 this.modal.classList.add(styleAppear);
+    //                 setTimeout(() => {
+    //                     this.modal.classList.remove(statusAppear, styleAppear);
+    //                 }, this.delay)
+    //             }
+    //         )
+    // }
+    //
+    // closeModal = () => {
+    //
+    //     const { styleDisappear } = this.props;
+    //     const statusDisappear = 'modalAwesome--disappearing';
+    //     this.modal.classList.add(statusDisappear);
+    //     this.modal.classList.add(styleDisappear);
+    //
+    //     const promise = new Promise((resolve, reject) => {
+    //         setTimeout(() => {
+    //             this.modalRoot.removeChild(this.modal);
+    //             resolve();
+    //         }, this.delay);
+    //     });
+    //
+    //     promise
+    //         .then(
+    //             () => {
+    //                 this.props.handleHide();
+    //                 let maxId = this.getMaxModalId();
+    //                 this.props.deleteModal(maxId);
+    //             }
+    //         )
+    // }
+    //
+    // modalTemplate = () => {
+    //     const { title } = this.props;
+    //     return (
+    //         <React.Fragment>
+    //             <div className='modalAwesome-bg' style={{animationDuration: `${this.delay/1000/2}s`}}></div>
+    //             <button onClick={this.closeModal} className='modalAwesome-close'>Close</button>
+    //             <div className='modalAwesome-win' style={{transitionDuration: `${this.delay/1000}s`}}>
+    //                 <div className='modalAwesome-win-header'>
+    //                     {title}
+    //                 </div>
+    //                 <div className='modalAwesome-win-body'>
+    //                     {this.props.children}
+    //                 </div>
+    //             </div>
+    //         </React.Fragment>
+    //     )
+    // }
+    //
+    // render() {
+    //
+    //     return ReactDOM.createPortal(
+    //         this.modalTemplate(),
+    //         this.modal
+    //     )
+    // }
+
+
+
+
+
+
+
 
 
 

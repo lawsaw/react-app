@@ -1,6 +1,6 @@
 $modalAwesome: (
   'container': '.modalAwesome',
-  'maxModals': 3
+  'maxModals': 4
 );
 
 #{map-get($modalAwesome, 'container')} {
@@ -111,8 +111,6 @@ $modalAwesome: (
 
 
 
-
-
   &--disappearing#{map-get($modalAwesome, 'container')}--toRight #{map-get($modalAwesome, 'container')}-win {
 
     transform: translate3d(100%, 0, 0);
@@ -125,43 +123,69 @@ $modalAwesome: (
 
 
 
+#modal-root {
 
-#{map-get($modalAwesome, 'container')} {
 
-  z-index: map_get($modalAwesome, 'maxModals');
-  transition: all 0.3s ease 0s;
 
-  & + & {
+  //@for $i from 2 through map_get($modalAwesome, 'maxModals') {
+  //
+  //  &[counter='#{$i}'] {
+  //    $test: $i*1 - 1;
+  //    @for $r from 1 through $i - 1 {
+  //
+  //      #{map-get($modalAwesome, 'container')}:nth-child(#{$r}) {
+  //        transform: scale( (map_get($modalAwesome, 'maxModals')- $i - $r) * 1 / map_get($modalAwesome, 'maxModals') );
+  //      }
+  //
+  //    }
+  //
+  //    #{map-get($modalAwesome, 'container')}:nth-child(#{$i}) {
+  //        transform: scale(1);
+  //        filter: blur(0px);
+  //      }
+  //
+  //  }
+  //
+  //}
 
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    filter: blur(3px);
-    z-index: map_get($modalAwesome, 'maxModals')-1;
 
-    transform: scale( (map_get($modalAwesome, 'maxModals')-1) * 1 / map_get($modalAwesome, 'maxModals') );
-
-    //#{map-get($modalAwesome, 'container')}-win { transform: scale( (map_get($modalAwesome, 'maxModals')-1) * 1 / map_get($modalAwesome, 'maxModals') ); }
-
+  &[counter='2'] {
+    #{map-get($modalAwesome, 'container')}:nth-child(1) {
+      transform: scale( (map_get($modalAwesome, 'maxModals')-1) * 1 / map_get($modalAwesome, 'maxModals') );
+    }
+    #{map-get($modalAwesome, 'container')}:nth-child(2) {
+      transform: scale(1);
+      filter: blur(0px);
+    }
+  }
+  &[counter='3'] {
+    #{map-get($modalAwesome, 'container')}:nth-child(1) {
+      transform: scale( (map_get($modalAwesome, 'maxModals')-2) * 1 / map_get($modalAwesome, 'maxModals') );
+    }
+    #{map-get($modalAwesome, 'container')}:nth-child(2) {
+      transform: scale( (map_get($modalAwesome, 'maxModals')-1) * 1 / map_get($modalAwesome, 'maxModals') );
+    }
+    #{map-get($modalAwesome, 'container')}:nth-child(3) {
+      transform: scale(1);
+      filter: blur(0px);
+    }
+  }
+  &[counter='4'] {
+    #{map-get($modalAwesome, 'container')}:nth-child(1) {
+      transform: scale( (map_get($modalAwesome, 'maxModals')-3) * 1 / map_get($modalAwesome, 'maxModals') );
+    }
+    #{map-get($modalAwesome, 'container')}:nth-child(2) {
+      transform: scale( (map_get($modalAwesome, 'maxModals')-2) * 1 / map_get($modalAwesome, 'maxModals') );
+    }
+    #{map-get($modalAwesome, 'container')}:nth-child(3) {
+      transform: scale( (map_get($modalAwesome, 'maxModals')-1) * 1 / map_get($modalAwesome, 'maxModals') );
+    }
+    #{map-get($modalAwesome, 'container')}:nth-child(4) {
+      transform: scale(1);
+      filter: blur(0px);
+    }
   }
 
-  & + & + & {
-
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    filter: blur(3px);
-    z-index: map_get($modalAwesome, 'maxModals')-2;
-
-    transform: scale( (map_get($modalAwesome, 'maxModals')-2) * 1 / map_get($modalAwesome, 'maxModals') );
-
-    //#{map-get($modalAwesome, 'container')}-win { transform: scale( (map_get($modalAwesome, 'maxModals')-2) * 1 / map_get($modalAwesome, 'maxModals') ); }
-
-  }
 
 }
 

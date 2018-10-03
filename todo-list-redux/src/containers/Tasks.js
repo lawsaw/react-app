@@ -57,6 +57,11 @@ class Tasks extends React.Component {
             showModal3: true
         }))
     }
+    handleShow4 = () => {
+        this.setState(() => ({
+            showModal4: true
+        }))
+    }
 
     handleHide = () => {
         this.setState(() => ({
@@ -73,6 +78,11 @@ class Tasks extends React.Component {
     handleHide3 = () => {
         this.setState(() => ({
             showModal3: false
+        }))
+    }
+    handleHide4 = () => {
+        this.setState(() => ({
+            showModal4: false
         }))
     }
 
@@ -122,6 +132,23 @@ class Tasks extends React.Component {
                                                     контент ++++
                                                     <br/>
                                                     контент +++++++
+
+                                                    <button onClick={this.handleShow4}>4я модалка</button>
+                                                    {
+                                                        this.state.showModal4 ? (
+                                                            <Modal title='4я модалка' handleHide={this.handleHide4} styleAppear='modalAwesome--zoomIn' styleDisappear='modalAwesome--toRight'>
+                                                                <br/>
+                                                                контент ++++
+                                                                <br/>
+                                                                контент +++++++<br/>
+                                                                контент +++++++<br/>
+                                                                контент +++++++<br/>
+                                                                контент +++++++
+                                                                <br/>
+                                                            </Modal>
+                                                        ) : null
+                                                    }
+
                                                     <br/>
                                                 </Modal>
                                             ) : null
