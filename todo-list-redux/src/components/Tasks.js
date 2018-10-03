@@ -24,7 +24,7 @@ export default class extends React.Component {
                     </div>
                 </div>
                 <p className='mb-1'>{short}</p>
-                <small><a href='#' onClick={(e) => {e.preventDefault(); this.props.handleReadMore()}}>Подробнее</a></small>
+                <small><a href='#' onClick={(e) => {e.preventDefault(); this.props.handleReadMore(id)}}>Подробнее</a></small>
                 {
                     readMore && <p>{full}</p>
                 }

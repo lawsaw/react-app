@@ -7,16 +7,25 @@ import { addTask, deleteTask, completeTask } from "../actions/TasksAction";
 class Tasks extends React.Component {
 
     state = {
-        readMore: false,
+        readMore: [],
         showModalAdd: false,
         showModal2: false,
-        showModal3: false
+        showModal3: false,
+        showModal4: false,
+
     }
 
-    handleReadMore = () => {
+    handleReadMore = (id) => {
+        console.log(id);
+        const { readMore } = this.state;
+        let arr = [
+            ...readMore
+        ];
+        arr[id] = !arr[id];
         this.setState((state) => ({
-            readMore: !this.state.readMore
+            readMore: arr
         }))
+        //console.log(this.state.readMore);
     }
 
     getMaxId = () => {
@@ -29,11 +38,11 @@ class Tasks extends React.Component {
     }
 
     handleAddTask = () => {
-        // const title = prompt('Название'),
-        //       short = prompt('Краткое описание'),
-        //       full = prompt('Полное описание');
-        // let maxId = this.getMaxId();
-        // this.props.addTask(++maxId, title, short, full);
+        const title = prompt('Название'),
+              short = prompt('Краткое описание'),
+              full = prompt('Полное описание');
+        let maxId = this.getMaxId();
+        this.props.addTask(++maxId, title, short, full);
     }
 
     handleDeleteTask = (id) => {
@@ -103,7 +112,7 @@ class Tasks extends React.Component {
                                 title={title}
                                 short={short}
                                 full={full}
-                                readMore={this.state.readMore}
+                                readMore={this.state.readMore[id]}
                                 completed={completed}
                                 handleDeleteTask = {this.handleDeleteTask}
                                 completeTask = {this.props.completeTask}
