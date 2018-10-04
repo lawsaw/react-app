@@ -15,7 +15,7 @@ class Modal extends React.Component {
 
     constructor(props) {
         super(props);
-        this.duration = 750;
+        this.duration = 300;
     }
 
     getLastModal = () => {
@@ -37,7 +37,14 @@ class Modal extends React.Component {
         modalRoot.setAttribute('counter', newId);
     }
 
+    test = () => {
+        alert(556566);
+    }
+
     componentDidMount() {
+
+        this.props.someTest(this.test);
+
         const { styleAppear } = this.props;
         this.setState(() => ({
             classStatus: 'modalAwesome--appearing'
@@ -58,16 +65,13 @@ class Modal extends React.Component {
     }
 
     close = () => {
-
         if(this.state.lock === true) {
             console.log('locked');
             return false;
         }
-
         this.setState(()=>({
             lock: true
         }));
-
         const { styleDisappear } = this.props;
         this.setState(() => ({
             classStatus: 'modalAwesome--disappearing',
@@ -86,7 +90,6 @@ class Modal extends React.Component {
     template = () => {
         const { title } = this.props;
         const { classStatus, classStyle } = this.state;
-
         return (
             <div className={`modalAwesome ${classStatus} ${classStyle}`} style={{transitionDuration: `${this.duration/1000}s`}}>
                 <div className='modalAwesome-bg' style={{animationDuration: `${this.duration/1000/2}s`}}></div>
@@ -270,5 +273,7 @@ export default connect(
             addModal: (id) => dispatch(addModal(id)),
             deleteModal: id => dispatch(deleteModal(id))
         }
-    }
+    },
+    null,
+    { withRef: true }
 )(Modal)

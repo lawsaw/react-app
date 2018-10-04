@@ -1,31 +1,37 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import TasksComponent from '../components/Tasks'
+import Task from './Task'
 import Modal from './Modal'
+import { render } from 'react-dom';
+
 import { addTask, deleteTask, completeTask } from "../actions/TasksAction";
 
-class Tasks extends React.Component {
+class TaskList extends React.Component {
+
+
 
     state = {
-        readMore: [],
-        showModalAdd: false,
+        showModal1: false,
         showModal2: false,
         showModal3: false,
         showModal4: false,
+        showModalAddTask: false,
 
+        title: null,
+        shortContent: null,
+        fullContent: null,
     }
 
-    handleReadMore = (id) => {
-        console.log(id);
-        const { readMore } = this.state;
-        let arr = [
-            ...readMore
-        ];
-        arr[id] = !arr[id];
-        this.setState((state) => ({
-            readMore: arr
-        }))
-        //console.log(this.state.readMore);
+
+    constructor(props) {
+        super(props);
+        this.modalRef = React.createRef();
+
+        this.testF = null;
+    }
+
+    getTest = (f) => {
+        this.testF = f;
     }
 
     getMaxId = () => {
@@ -38,20 +44,42 @@ class Tasks extends React.Component {
     }
 
     handleAddTask = () => {
-        const title = prompt('Название'),
-              short = prompt('Краткое описание'),
-              full = prompt('Полное описание');
+        // const title = prompt('Название'),
+        //       short = prompt('Краткое описание'),
+        //       full = prompt('Полное описание');
         let maxId = this.getMaxId();
-        this.props.addTask(++maxId, title, short, full);
+        const { title, shortContent, fullContent } = this.state;
+        this.props.addTask(++maxId, title, shortContent, fullContent);
+        this.modalRef.close();
     }
+
+
+    handleChange = (key, value) => {
+        this.setState(() => ({
+            [key]: value
+        }))
+    }
+
 
     handleDeleteTask = (id) => {
         this.props.deleteTask(id);
     }
 
-    handleShow = () => {
+    handleShowModalAddTask = () => {
         this.setState(() => ({
-            showModalAdd: true
+            showModalAddTask: true
+        }))
+    }
+
+    handleHideModalAddTask = () => {
+        this.setState(() => ({
+            showModalAddTask: false
+        }))
+    }
+
+    handleShow1 = () => {
+        this.setState(() => ({
+            showModal1: true
         }))
     }
 
@@ -72,9 +100,9 @@ class Tasks extends React.Component {
         }))
     }
 
-    handleHide = () => {
+    handleHide1 = () => {
         this.setState(() => ({
-            showModalAdd: false
+            showModal1: false
         }))
     }
 
@@ -95,45 +123,109 @@ class Tasks extends React.Component {
         }))
     }
 
+    getRef = (ref) => {
+        if(ref) {
+            this.modalRef = ref.getWrappedInstance()
+        }
+    }
+
+
+
+
     render() {
         const { tasks } = this.props;
         return (
             <div>
                 <div className="btn-toolbar mb-3">
-                    <button onClick={this.handleShow}>Добавить задачу</button>
+                    <button onClick={this.handleShowModalAddTask}>Добавить задачу</button>
+                    <button onClick={this.handleShow1}>Тест модалки</button>
+                    <button onClick={this.handleAddTask}>Click</button>
+                    <button onClick={this.testF}>Test</button>
                 </div>
 
                 <div className='list-group'>
                     {
                         tasks.map(({id, title, short, full, completed}, index) => (
-                            <TasksComponent
+                            <Task
                                 key={index}
                                 id={id}
                                 title={title}
                                 short={short}
                                 full={full}
-                                readMore={this.state.readMore[id]}
                                 completed={completed}
                                 handleDeleteTask = {this.handleDeleteTask}
                                 completeTask = {this.props.completeTask}
-                                handleReadMore = {this.handleReadMore}
                             />
                         ))
                     }
                 </div>
 
+
                 {
-                    this.state.showModalAdd ? (
-                        <Modal title='Добавить задачу' handleHide={this.handleHide} styleAppear='modalAwesome--zoomIn' styleDisappear='modalAwesome--toRight'>
+                    this.state.showModalAddTask ? (
+
+                        <Modal someTest={this.getTest} ref={this.getRef} title='Добавить задачу' handleHide={this.handleHideModalAddTask} styleAppear='modalAwesome--zoomIn' styleDisappear='modalAwesome--toRight'>
+
+                            <form>
+
+                                <div className="form-group row">
+                                    <label className="col-sm-4 col-form-label">
+                                        Заголовок:
+                                    </label>
+                                    <div className="col-sm-8">
+                                        <input className="form-control" onChange={(e) => (this.handleChange('title', e.currentTarget.value))} />
+                                    </div>
+                                </div>
+
+                                <div className="form-group row">
+                                    <label className="col-sm-4 col-form-label">
+                                        Короткое описание:
+                                    </label>
+                                    <div className="col-sm-8">
+                                        <textarea className="form-control" onChange={(e) => (this.handleChange('shortContent', e.currentTarget.value))} />
+                                    </div>
+                                </div>
+
+                                <div className="form-group row">
+                                    <label className="col-sm-4 col-form-label">
+                                        Полное описание:
+                                    </label>
+                                    <div className="col-sm-8">
+                                        <textarea className="form-control" onChange={(e) => (this.handleChange('fullContent', e.currentTarget.value))} />
+                                    </div>
+                                </div>
+
+                                <div className="form-group row">
+                                    <label className="col-sm-4 col-form-label">
+
+                                    </label>
+                                    <div className="col-sm-8">
+                                        <button type="submit" className="btn btn-primary" onClick={(e) => {e.preventDefault(); this.handleAddTask()}}>Добавить</button>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </Modal>
+
+                    ) : null
+                }
+
+
+
+                {
+                    this.state.showModal1 ? (
+                        <Modal title='Первая модалка' handleHide={this.handleHide1} styleAppear='modalAwesome--zoomIn' styleDisappear='modalAwesome--toRight'>
                             <button onClick={this.handleShow2}>Еще модалка</button>
+
                             {
                                 this.state.showModal2 ? (
                                     <Modal title='Вторая модалка' handleHide={this.handleHide2} styleAppear='modalAwesome--zoomIn' styleDisappear='modalAwesome--toRight'>
                                         <br/>
                                         контент
                                         <br/>
-
                                         <button onClick={this.handleShow3}>3я модалка</button>
+
                                         {
                                             this.state.showModal3 ? (
                                                 <Modal title='Третья модалка' handleHide={this.handleHide3} styleAppear='modalAwesome--zoomIn' styleDisappear='modalAwesome--toRight'>
@@ -141,8 +233,8 @@ class Tasks extends React.Component {
                                                     контент ++++
                                                     <br/>
                                                     контент +++++++
-
                                                     <button onClick={this.handleShow4}>4я модалка</button>
+
                                                     {
                                                         this.state.showModal4 ? (
                                                             <Modal title='4я модалка' handleHide={this.handleHide4} styleAppear='modalAwesome--zoomIn' styleDisappear='modalAwesome--toRight'>
@@ -157,17 +249,14 @@ class Tasks extends React.Component {
                                                             </Modal>
                                                         ) : null
                                                     }
-
-                                                    <br/>
                                                 </Modal>
                                             ) : null
                                         }
 
-                                        контент
-                                        <br/>
                                     </Modal>
                                 ) : null
                             }
+
                         </Modal>
                     ) : null
                 }
@@ -191,4 +280,4 @@ export default connect(
             completeTask: id => dispatch(completeTask(id))
         }
     }
-)(Tasks)
+)(TaskList)
