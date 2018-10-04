@@ -15,7 +15,7 @@ class Modal extends React.Component {
 
     constructor(props) {
         super(props);
-        this.duration = 300;
+        this.duration = 500;
     }
 
     getLastModal = () => {
@@ -42,9 +42,6 @@ class Modal extends React.Component {
     }
 
     componentDidMount() {
-
-        this.props.someTest(this.test);
-
         const { styleAppear } = this.props;
         this.setState(() => ({
             classStatus: 'modalAwesome--appearing'
@@ -61,12 +58,11 @@ class Modal extends React.Component {
             }, this.duration)
         }, 1);
         this.upgradeStore();
-
     }
 
-    close = () => {
+    close = (handleHideInParent) => {
         if(this.state.lock === true) {
-            console.log('locked');
+            console.log('wait until it\'s unlocked');
             return false;
         }
         this.setState(()=>({
@@ -83,9 +79,25 @@ class Modal extends React.Component {
                 classStatus: '',
                 classStyle: ''
             }));
-            this.props.handleHide();
+            //this.props.handleHide();
+            handleHideInParent();
         }, this.duration);
     }
+
+
+
+
+
+    handleResolve = () => {
+        this.props.onResolve(this.close);
+    }
+
+    handleReject = () => {
+        this.props.onReject(this.close);
+    }
+
+
+
 
     template = () => {
         const { title } = this.props;
@@ -93,13 +105,28 @@ class Modal extends React.Component {
         return (
             <div className={`modalAwesome ${classStatus} ${classStyle}`} style={{transitionDuration: `${this.duration/1000}s`}}>
                 <div className='modalAwesome-bg' style={{animationDuration: `${this.duration/1000/2}s`}}></div>
-                <button onClick={this.close} className='modalAwesome-close'>Close</button>
+
+                <button
+                    onClick={this.handleReject}
+                    className='modalAwesome-close'
+                >Close</button>
+
                 <div className='modalAwesome-win' style={{transitionDuration: `${this.duration/1000}s`}}>
                     <div className='modalAwesome-win-header'>
                         {title}
                     </div>
                     <div className='modalAwesome-win-body'>
                         {this.props.children}
+                    </div>
+                    <div className='modalAwesome-win-footer'>
+                        <div className="btn-toolbar">
+                            <div className="btn-group mr-2">
+                                <button onClick={this.handleResolve} className="btn btn-secondary">Resolve</button>
+                            </div>
+                            <div className="btn-group mr-2">
+                                <button onClick={this.handleReject} className="btn btn-secondary">Reject</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -2,13 +2,14 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Task from './Task'
 import Modal from './Modal'
-import { render } from 'react-dom';
-
 import { addTask, deleteTask, completeTask } from "../actions/TasksAction";
 
 class TaskList extends React.Component {
 
-
+    constructor(props) {
+        super(props);
+        this.someRef = React.createRef();
+    }
 
     state = {
         showModal1: false,
@@ -17,21 +18,17 @@ class TaskList extends React.Component {
         showModal4: false,
         showModalAddTask: false,
 
+        showModalConfirmAdd: false,
+
         title: null,
         shortContent: null,
         fullContent: null,
     }
 
-
-    constructor(props) {
-        super(props);
-        this.modalRef = React.createRef();
-
-        this.testF = null;
-    }
-
-    getTest = (f) => {
-        this.testF = f;
+    playFunction = (ref) => {
+        if(ref) {
+            this.someRef = ref.getWrappedInstance()
+        }
     }
 
     getMaxId = () => {
@@ -43,104 +40,96 @@ class TaskList extends React.Component {
         return max;
     }
 
-    handleAddTask = () => {
-        // const title = prompt('Название'),
-        //       short = prompt('Краткое описание'),
-        //       full = prompt('Полное описание');
-        let maxId = this.getMaxId();
-        const { title, shortContent, fullContent } = this.state;
-        this.props.addTask(++maxId, title, shortContent, fullContent);
-        this.modalRef.close();
+    handleSubmitAddTaskForm = () => {
+
+        // some validation can be here...
+        this.modalOpenViaKey('showModalConfirmAdd');
+
     }
 
 
-    handleChange = (key, value) => {
+    onTaskAdd = (key, closeFunction) => {
+        let maxId = this.getMaxId();
+        const { title, shortContent, fullContent } = this.state;
+        this.props.addTask(++maxId, title, shortContent, fullContent);
+        this.setState(() => ({
+            title: null,
+            shortContent: null,
+            fullContent: null,
+        }))
+        this.onResolve(key, closeFunction);
+        setTimeout(() => {
+            //this.onReject('showModalAddTask', closeFunction);
+            this.someRef.close(
+                (f) => {this.modalCloseViaKey('showModalAddTask')}
+            );
+        },200)
+    }
+
+
+
+
+
+    handleAddTaskForm = (key, value) => {
         this.setState(() => ({
             [key]: value
         }))
     }
 
-
     handleDeleteTask = (id) => {
         this.props.deleteTask(id);
     }
 
-    handleShowModalAddTask = () => {
+    onResolve = (key, closeFunction) => {
+        //console.log('resolve!');
+        setTimeout(() => {
+            closeFunction(() => {
+                this.setState(() => ({
+                    [key]: false
+                }))
+            })
+        },500);
+    }
+
+    onReject = (key, closeFunction) => {
+        //console.log('Rejected!');
+        closeFunction(() => {
+            this.setState(() => ({
+                [key]: false
+            }))
+        })
+    }
+
+    modalOpenViaKey = (key) => {
         this.setState(() => ({
-            showModalAddTask: true
+            [key]: true
         }))
     }
 
-    handleHideModalAddTask = () => {
+    modalCloseViaKey = (key) => {
         this.setState(() => ({
-            showModalAddTask: false
+            [key]: false
         }))
     }
 
-    handleShow1 = () => {
-        this.setState(() => ({
-            showModal1: true
-        }))
-    }
 
-    handleShow2 = () => {
-        this.setState(() => ({
-            showModal2: true
-        }))
-    }
 
-    handleShow3 = () => {
-        this.setState(() => ({
-            showModal3: true
-        }))
-    }
-    handleShow4 = () => {
-        this.setState(() => ({
-            showModal4: true
-        }))
-    }
 
-    handleHide1 = () => {
-        this.setState(() => ({
-            showModal1: false
-        }))
-    }
 
-    handleHide2 = () => {
-        this.setState(() => ({
-            showModal2: false
-        }))
-    }
 
-    handleHide3 = () => {
-        this.setState(() => ({
-            showModal3: false
-        }))
-    }
-    handleHide4 = () => {
-        this.setState(() => ({
-            showModal4: false
-        }))
-    }
 
-    getRef = (ref) => {
-        if(ref) {
-            this.modalRef = ref.getWrappedInstance()
-        }
-    }
 
 
 
 
     render() {
+        //console.log(this.state.showModalAddTask);
         const { tasks } = this.props;
         return (
             <div>
                 <div className="btn-toolbar mb-3">
-                    <button onClick={this.handleShowModalAddTask}>Добавить задачу</button>
-                    <button onClick={this.handleShow1}>Тест модалки</button>
-                    <button onClick={this.handleAddTask}>Click</button>
-                    <button onClick={this.testF}>Test</button>
+                    <button onClick={() => {this.modalOpenViaKey('showModalAddTask')}}>Добавить задачу</button>
+                    <button onClick={() => {this.modalOpenViaKey('showModal1')}}>Тест модалки</button>
                 </div>
 
                 <div className='list-group'>
@@ -160,50 +149,50 @@ class TaskList extends React.Component {
                     }
                 </div>
 
-
                 {
                     this.state.showModalAddTask ? (
 
-                        <Modal someTest={this.getTest} ref={this.getRef} title='Добавить задачу' handleHide={this.handleHideModalAddTask} styleAppear='modalAwesome--zoomIn' styleDisappear='modalAwesome--toRight'>
-
+                        <Modal
+                            title='Добавить задачу'
+                            styleAppear='modalAwesome--zoomIn'
+                            styleDisappear='modalAwesome--toRight'
+                            onResolve={(f) => {this.onResolve('showModalAddTask', f)}}
+                            onReject={(f) => {this.onReject('showModalAddTask', f)}}
+                            ref={this.playFunction}
+                        >
                             <form>
-
                                 <div className="form-group row">
                                     <label className="col-sm-4 col-form-label">
                                         Заголовок:
                                     </label>
                                     <div className="col-sm-8">
-                                        <input className="form-control" onChange={(e) => (this.handleChange('title', e.currentTarget.value))} />
+                                        <input className="form-control" onChange={(e) => (this.handleAddTaskForm('title', e.currentTarget.value))} />
                                     </div>
                                 </div>
-
                                 <div className="form-group row">
                                     <label className="col-sm-4 col-form-label">
                                         Короткое описание:
                                     </label>
                                     <div className="col-sm-8">
-                                        <textarea className="form-control" onChange={(e) => (this.handleChange('shortContent', e.currentTarget.value))} />
+                                        <textarea className="form-control" onChange={(e) => (this.handleAddTaskForm('shortContent', e.currentTarget.value))} />
                                     </div>
                                 </div>
-
                                 <div className="form-group row">
                                     <label className="col-sm-4 col-form-label">
                                         Полное описание:
                                     </label>
                                     <div className="col-sm-8">
-                                        <textarea className="form-control" onChange={(e) => (this.handleChange('fullContent', e.currentTarget.value))} />
+                                        <textarea className="form-control" onChange={(e) => (this.handleAddTaskForm('fullContent', e.currentTarget.value))} />
                                     </div>
                                 </div>
-
                                 <div className="form-group row">
                                     <label className="col-sm-4 col-form-label">
 
                                     </label>
                                     <div className="col-sm-8">
-                                        <button type="submit" className="btn btn-primary" onClick={(e) => {e.preventDefault(); this.handleAddTask()}}>Добавить</button>
+                                        <button type="submit" className="btn  btn-secondarybtn-primary" onClick={(e) => {e.preventDefault(); this.handleSubmitAddTaskForm()}}>Добавить</button>
                                     </div>
                                 </div>
-
                             </form>
 
                         </Modal>
@@ -211,33 +200,93 @@ class TaskList extends React.Component {
                     ) : null
                 }
 
+                {
+                    this.state.showModalConfirmAdd ? (
+                        <Modal
+                            title='Вы уверены, что хотите добавить запись?'
+                            styleAppear='modalAwesome--zoomIn'
+                            styleDisappear='modalAwesome--toRight'
+                            onResolve={    (f) => {this.onTaskAdd('showModalConfirmAdd', f)}     }
+                            onReject={(f) => {this.onReject('showModalConfirmAdd', f)}}
+                        >
+                            <div className="form-group row">
+                                <label className="col-sm-4 col-form-label">
+                                    Заголовок:
+                                </label>
+                                <div className="col-sm-8">
+                                    {this.state.title}
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label className="col-sm-4 col-form-label">
+                                    Коротко:
+                                </label>
+                                <div className="col-sm-8">
+                                    {this.state.shortContent}
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label className="col-sm-4 col-form-label">
+                                    Полный текст:
+                                </label>
+                                <div className="col-sm-8">
+                                    {this.state.fullContent}
+                                </div>
+                            </div>
 
+                        </Modal>
+                    ) : null
+                }
 
                 {
                     this.state.showModal1 ? (
-                        <Modal title='Первая модалка' handleHide={this.handleHide1} styleAppear='modalAwesome--zoomIn' styleDisappear='modalAwesome--toRight'>
-                            <button onClick={this.handleShow2}>Еще модалка</button>
+                        <Modal
+                            title='Первая модалка'
+                            styleAppear='modalAwesome--zoomIn'
+                            styleDisappear='modalAwesome--toRight'
+                            onResolve={(f) => {this.onResolve('showModal1', f)}}
+                            onReject={(f) => {this.onReject('showModal1', f)}}
+                        >
+                            <button onClick={() => {this.modalOpenViaKey('showModal2')}}>Еще модалка</button>
 
                             {
                                 this.state.showModal2 ? (
-                                    <Modal title='Вторая модалка' handleHide={this.handleHide2} styleAppear='modalAwesome--zoomIn' styleDisappear='modalAwesome--toRight'>
+                                    <Modal
+                                        title='Вторая модалка'
+                                        styleAppear='modalAwesome--zoomIn'
+                                        styleDisappear='modalAwesome--toRight'
+                                        onResolve={(f) => {this.onResolve('showModal2', f)}}
+                                        onReject={(f) => {this.onReject('showModal2', f)}}
+                                    >
                                         <br/>
                                         контент
                                         <br/>
-                                        <button onClick={this.handleShow3}>3я модалка</button>
+                                        <button onClick={() => {this.modalOpenViaKey('showModal3')}}>3я модалка</button>
 
                                         {
                                             this.state.showModal3 ? (
-                                                <Modal title='Третья модалка' handleHide={this.handleHide3} styleAppear='modalAwesome--zoomIn' styleDisappear='modalAwesome--toRight'>
+                                                <Modal
+                                                    title='Третья модалка'
+                                                    styleAppear='modalAwesome--zoomIn'
+                                                    styleDisappear='modalAwesome--toRight'
+                                                    onResolve={(f) => {this.onResolve('showModal3', f)}}
+                                                    onReject={(f) => {this.onReject('showModal3', f)}}
+                                                >
                                                     <br/>
                                                     контент ++++
                                                     <br/>
                                                     контент +++++++
-                                                    <button onClick={this.handleShow4}>4я модалка</button>
+                                                    <button onClick={() => {this.modalOpenViaKey('showModal4')}}>4я модалка</button>
 
                                                     {
                                                         this.state.showModal4 ? (
-                                                            <Modal title='4я модалка' handleHide={this.handleHide4} styleAppear='modalAwesome--zoomIn' styleDisappear='modalAwesome--toRight'>
+                                                            <Modal
+                                                                title='4я модалка'
+                                                                styleAppear='modalAwesome--zoomIn'
+                                                                styleDisappear='modalAwesome--toRight'
+                                                                onResolve={(f) => {this.onResolve('showModal4', f)}}
+                                                                onReject={(f) => {this.onReject('showModal4', f)}}
+                                                            >
                                                                 <br/>
                                                                 контент ++++
                                                                 <br/>
@@ -279,5 +328,7 @@ export default connect(
             deleteTask: id => dispatch(deleteTask(id)),
             completeTask: id => dispatch(completeTask(id))
         }
-    }
+    },
+    null,
+    { withRef: true }
 )(TaskList)
