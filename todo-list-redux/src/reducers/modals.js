@@ -18,7 +18,7 @@ export function modalReducer(state = initialState, action) {
             ];
         case DELETE_MODAL:
             return state.filter((modal) => (
-                modal.id != action.id
+                modal.id !== action.id
             ))
         default:
             return state
