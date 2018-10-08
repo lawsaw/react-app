@@ -1,6 +1,6 @@
 $modalAwesome: (
   'container': '.modalAwesome',
-  'maxModals': 4
+  'maxModals': 5
 );
 
 #{map-get($modalAwesome, 'container')} {
@@ -53,6 +53,13 @@ $modalAwesome: (
     padding: 20px;
     width: 100%;
 
+    animation-iteration-count: 1;
+    animation-timing-function: ease;
+    animation-delay: 0s;
+    animation-direction: normal;
+    animation-play-state: running;
+    animation-fill-mode: both;
+
     &-header {
 
       padding: 20px;
@@ -93,38 +100,130 @@ $modalAwesome: (
 }
 
 
+@keyframes modalAwesome-fromZoomIn {
+  from {
+    transform-origin: center center;
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes modalAwesome-fromZoomOut {
+  from {
+    transform-origin: center center;
+    transform: scale(1.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes modalAwesome-fromLeft {
+  from {
+    transform: translate3d(-100%, 0, 0);
+    opacity: 0;
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes modalAwesome-fromRight {
+  from {
+    transform: translate3d(100%, 0, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes modalAwesome-fromUp {
+  from {
+    transform: translate3d(0, -100%, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes modalAwesome-fromDown {
+  from {
+    transform: translate3d(0, 100%, 0);
+    opacity: 0;
+  }
+}
+
+
+@keyframes modalAwesome-toZoomIn {
+  from {
+    transform-origin: center center;
+  }
+  to {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes modalAwesome-toZoomOut {
+  from {
+    transform-origin: center center;
+  }
+  to {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes modalAwesome-toLeft {
+  to {
+    transform: translate3d(-100%, 0, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes modalAwesome-toRight {
+  to {
+    transform: translate3d(100%, 0, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes modalAwesome-toUp {
+  to {
+    transform: translate3d(0, -100%, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes modalAwesome-toDown {
+  to {
+    transform: translate3d(0, 100%, 0);
+    opacity: 0;
+  }
+}
+
+
 #{map-get($modalAwesome, 'container')} {
 
   &--appearing #{map-get($modalAwesome, 'container')}-bg { animation-name: opacityIn; }
   &--disappearing #{map-get($modalAwesome, 'container')}-bg { animation-name: opacityOut; }
 
+  &--appearing#{map-get($modalAwesome, 'container')}--fromZoomIn #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-fromZoomIn; }
+  &--appearing#{map-get($modalAwesome, 'container')}--fromZoomOut #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-fromZoomOut; }
+  &--appearing#{map-get($modalAwesome, 'container')}--fromLeft #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-fromLeft; }
+  &--appearing#{map-get($modalAwesome, 'container')}--fromRight #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-fromRight; }
+  &--appearing#{map-get($modalAwesome, 'container')}--fromUp #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-fromUp; }
+  &--appearing#{map-get($modalAwesome, 'container')}--fromDown #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-fromDown; }
 
-
-  &--appearing #{map-get($modalAwesome, 'container')}-win {
-
-    transition: all 0s ease 0s;
-    transform-origin: center center;
-    transform: scale(0.5);
-    opacity: 0;
-
-  }
-
-  &--appearing#{map-get($modalAwesome, 'container')}--zoomIn #{map-get($modalAwesome, 'container')}-win {
-
-    transform: scale(1);
-    opacity: 1;
-
-  }
-
-
-
-
-  &--disappearing#{map-get($modalAwesome, 'container')}--toRight #{map-get($modalAwesome, 'container')}-win {
-
-    transform: translate3d(100%, 0, 0);
-    opacity: 0;
-
-  }
+  &--disappearing#{map-get($modalAwesome, 'container')}--toZoomIn #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-toZoomIn; }
+  &--disappearing#{map-get($modalAwesome, 'container')}--toZoomOut #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-toZoomOut; }
+  &--disappearing#{map-get($modalAwesome, 'container')}--toLeft #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-toLeft; }
+  &--disappearing#{map-get($modalAwesome, 'container')}--toRight #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-toRight; }
+  &--disappearing#{map-get($modalAwesome, 'container')}--toUp #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-toUp; }
+  &--disappearing#{map-get($modalAwesome, 'container')}--toDown #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-toDown; }
 
 }
 
@@ -133,69 +232,66 @@ $modalAwesome: (
 
 #modal-root {
 
+  @for $i from 2 through map_get($modalAwesome, 'maxModals') {
+
+    &[counter='#{$i}'] {
+
+      @for $r from 1 through $i - 1 {
+
+        #{map-get($modalAwesome, 'container')}:nth-child(#{$r}) {
+          transform: scale( (map_get($modalAwesome, 'maxModals') - $i + $r) * 1 / map_get($modalAwesome, 'maxModals') );
+        }
+
+      }
+
+      #{map-get($modalAwesome, 'container')}:nth-child($i) {
+        transform: scale(1);
+        filter: blur(0px);
+      }
+
+    }
+
+  }
 
 
-  //@for $i from 2 through map_get($modalAwesome, 'maxModals') {
-  //
-  //  &[counter='#{$i}'] {
-  //    $test: $i*1 - 1;
-  //    @for $r from 1 through $i - 1 {
-  //
-  //      #{map-get($modalAwesome, 'container')}:nth-child(#{$r}) {
-  //        transform: scale( (map_get($modalAwesome, 'maxModals')- $i - $r) * 1 / map_get($modalAwesome, 'maxModals') );
-  //      }
-  //
-  //    }
-  //
-  //    #{map-get($modalAwesome, 'container')}:nth-child(#{$i}) {
-  //        transform: scale(1);
-  //        filter: blur(0px);
-  //      }
-  //
+  //&[counter='2'] {
+  //  #{map-get($modalAwesome, 'container')}:nth-child(1) {
+  //    transform: scale( (map_get($modalAwesome, 'maxModals')-1) * 1 / map_get($modalAwesome, 'maxModals') );
   //  }
-  //
+  //  #{map-get($modalAwesome, 'container')}:nth-child(2) {
+  //    transform: scale(1);
+  //    filter: blur(0px);
+  //  }
+  //}
+  //&[counter='3'] {
+  //  #{map-get($modalAwesome, 'container')}:nth-child(1) {
+  //    transform: scale( (map_get($modalAwesome, 'maxModals')-2) * 1 / map_get($modalAwesome, 'maxModals') );
+  //  }
+  //  #{map-get($modalAwesome, 'container')}:nth-child(2) {
+  //    transform: scale( (map_get($modalAwesome, 'maxModals')-1) * 1 / map_get($modalAwesome, 'maxModals') );
+  //  }
+  //  #{map-get($modalAwesome, 'container')}:nth-child(3) {
+  //    transform: scale(1);
+  //    filter: blur(0px);
+  //  }
+  //}
+  //&[counter='4'] {
+  //  #{map-get($modalAwesome, 'container')}:nth-child(1) {
+  //    transform: scale( (map_get($modalAwesome, 'maxModals')-3) * 1 / map_get($modalAwesome, 'maxModals') );
+  //  }
+  //  #{map-get($modalAwesome, 'container')}:nth-child(2) {
+  //    transform: scale( (map_get($modalAwesome, 'maxModals')-2) * 1 / map_get($modalAwesome, 'maxModals') );
+  //  }
+  //  #{map-get($modalAwesome, 'container')}:nth-child(3) {
+  //    transform: scale( (map_get($modalAwesome, 'maxModals')-1) * 1 / map_get($modalAwesome, 'maxModals') );
+  //  }
+  //  #{map-get($modalAwesome, 'container')}:nth-child(4) {
+  //    transform: scale(1);
+  //    filter: blur(0px);
+  //  }
   //}
 
 
-
-
-
-  &[counter='2'] {
-    #{map-get($modalAwesome, 'container')}:nth-child(1) {
-      transform: scale( (map_get($modalAwesome, 'maxModals')-1) * 1 / map_get($modalAwesome, 'maxModals') );
-    }
-    #{map-get($modalAwesome, 'container')}:nth-child(2) {
-      transform: scale(1);
-      filter: blur(0px);
-    }
-  }
-  &[counter='3'] {
-    #{map-get($modalAwesome, 'container')}:nth-child(1) {
-      transform: scale( (map_get($modalAwesome, 'maxModals')-2) * 1 / map_get($modalAwesome, 'maxModals') );
-    }
-    #{map-get($modalAwesome, 'container')}:nth-child(2) {
-      transform: scale( (map_get($modalAwesome, 'maxModals')-1) * 1 / map_get($modalAwesome, 'maxModals') );
-    }
-    #{map-get($modalAwesome, 'container')}:nth-child(3) {
-      transform: scale(1);
-      filter: blur(0px);
-    }
-  }
-  &[counter='4'] {
-    #{map-get($modalAwesome, 'container')}:nth-child(1) {
-      transform: scale( (map_get($modalAwesome, 'maxModals')-3) * 1 / map_get($modalAwesome, 'maxModals') );
-    }
-    #{map-get($modalAwesome, 'container')}:nth-child(2) {
-      transform: scale( (map_get($modalAwesome, 'maxModals')-2) * 1 / map_get($modalAwesome, 'maxModals') );
-    }
-    #{map-get($modalAwesome, 'container')}:nth-child(3) {
-      transform: scale( (map_get($modalAwesome, 'maxModals')-1) * 1 / map_get($modalAwesome, 'maxModals') );
-    }
-    #{map-get($modalAwesome, 'container')}:nth-child(4) {
-      transform: scale(1);
-      filter: blur(0px);
-    }
-  }
 
 
 }

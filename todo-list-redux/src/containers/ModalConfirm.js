@@ -5,33 +5,56 @@ export default class extends React.Component {
 
     constructor(props) {
         super(props);
-        this.modalRef = React.createRef();
+        this.ref = React.createRef();
     }
 
     setRef = (ref) => {
         if(ref) {
-            this.modalRef = ref.getWrappedInstance()
+            this.ref = ref.getWrappedInstance()
         }
     }
 
     handleResolve = () => {
-        this.props.onResolve()
+        if(this.props.refs) {
+            // This happens in case of Confirm modal inserted into the FormModal
+            this.props.onResolve();
+            return true;
+        }
+        // This happens in case of single Confirm modal from root
+        this.ref.handleClose();
+        this.props.onResolve();
+
     }
 
     handleReject = () => {
-        this.props.onReject()
+        if(this.props.refs) {
+            // This happens in case of Confirm modal inserted into the FormModal
+            this.props.onReject();
+            return true;
+        }
+        // This happens in case of single Confirm modal from root
+        this.ref.handleClose();
+        this.props.onReject();
     }
 
     render() {
         const { title, styleAppear, styleDisappear, onClose } = this.props;
+        const refs = this.props.refs ? this.props.refs : this.setRef;
         return (
             <Modal
-                ref={this.setRef}
+                ref={refs}
                 title={title}
                 styleAppear={styleAppear}
                 styleDisappear={styleDisappear}
                 onClose={onClose}
             >
+                {
+                    this.props.children ? (
+                        <div className="modalAwesome-win-body">
+                            {this.props.children}
+                        </div>
+                    ) : null
+                }
                 <div className='modalAwesome-win-footer'>
                     <div className="btn-toolbar">
                         <div className="btn-group mr-2">

@@ -1,6 +1,6 @@
 import React from 'react'
 import Modal from './Modal'
-//import ModalConfirm from './ModalConfirm'
+import ModalConfirm from './ModalConfirm'
 
 export default class extends React.Component {
 
@@ -8,6 +8,8 @@ export default class extends React.Component {
         super(props);
         this.modalFormRef = React.createRef();
         this.modalConfirmRef = React.createRef();
+        this.labelResolve = this.props.labelResolve ? this.props.labelResolve : 'Отправить';
+        this.labelReject = this.props.labelReject ? this.props.labelReject : 'Закрыть';
     }
 
     state = {
@@ -31,6 +33,9 @@ export default class extends React.Component {
     }
 
     handleShowConfirm = () => {
+        if(!this.props.onResolveValidate()) {
+            return false;
+        }
         this.setState(() => ({
             confirm: true
         }))
@@ -48,11 +53,11 @@ export default class extends React.Component {
             this.modalFormRef.handleClose();
             this.props.onResolve();
         },300);
-
     }
 
-    handleConfirmClose = () => {
-        this.modalConfirmRef.handleClose()
+    handleReject = () => {
+        this.modalConfirmRef.handleClose();
+        this.props.onReject();
     }
 
     render() {
@@ -72,10 +77,10 @@ export default class extends React.Component {
                     <div className='modalAwesome-win-footer'>
                         <div className="btn-toolbar">
                             <div className="btn-group mr-2">
-                                <button onClick={this.handleShowConfirm} className="btn btn-secondary">Отправить</button>
+                                <button onClick={this.handleShowConfirm} className="btn btn-secondary">{this.labelResolve}</button>
                             </div>
                             <div className="btn-group mr-2">
-                                <button onClick={this.handleClose} className="btn btn-secondary">Закрыть</button>
+                                <button onClick={this.handleClose} className="btn btn-secondary">{this.labelReject}</button>
                             </div>
                         </div>
                     </div>
@@ -84,25 +89,17 @@ export default class extends React.Component {
                 {
                     this.state.confirm ? (
 
-                        <Modal
-                            ref={this.setConfirmRef}
-                            title='Подвердите действие'
-                            styleAppear={styleAppear}
-                            styleDisappear={styleDisappear}
-                            onClose={this.handleCancelConfirm}
-                        >
-                            <div className='modalAwesome-win-footer'>
-                                <div className="btn-toolbar">
-                                    <div className="btn-group mr-2">
-                                        <button onClick={this.handleResolve} className="btn btn-secondary">Принять</button>
-                                    </div>
-                                    <div className="btn-group mr-2">
-                                        <button onClick={this.handleConfirmClose} className="btn btn-secondary">Отмена</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </Modal>
-
+                            <ModalConfirm
+                                refs={this.setConfirmRef}
+                                title='Подвердите действие'
+                                styleAppear={styleAppear}
+                                styleDisappear={styleDisappear}
+                                onClose={this.handleCancelConfirm}
+                                onResolve={this.handleResolve}
+                                onReject={this.handleReject}
+                            >
+                                {this.props.confirmContent}
+                            </ModalConfirm>
 
                     ) : null
                 }

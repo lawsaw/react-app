@@ -16,6 +16,7 @@ export default class extends React.Component {
 
     handleClose = () => {
         this.modalRef.handleClose()
+        console.log('gdfgs');
     }
 
     render() {
@@ -27,12 +28,12 @@ export default class extends React.Component {
                 styleAppear={styleAppear}
                 styleDisappear={styleDisappear}
                 onClose={onClose}
+
             >
                 <div className="modalAwesome-win-body">
                     {this.props.children}
                     <button onClick={this.handleClose} className="btn btn-secondary">Закрыть</button>
                 </div>
-
             </Modal>
         )
     }

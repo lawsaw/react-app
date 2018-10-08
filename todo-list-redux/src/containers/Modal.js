@@ -18,7 +18,6 @@ class Modal extends React.Component {
         this.duration = 500;
     }
 
-
     getLastModal = () => {
         let { modals } = this.props;
         return modals.length ? modals[0].id : 0;
@@ -36,10 +35,6 @@ class Modal extends React.Component {
         let newId = lastId-1;
         this.props.deleteModal(lastId);
         modalRoot.setAttribute('counter', newId);
-    }
-
-    test = () => {
-        alert(556566);
     }
 
     componentDidMount() {
@@ -86,15 +81,6 @@ class Modal extends React.Component {
         // }, this.duration);
     }
 
-    handleResolve = () => {
-        this.props.onResolve(this.close);
-    }
-
-    handleReject = () => {
-        this.close();
-        //this.props.onReject(this.close);
-    }
-
     handleClose = () => {
         this.close();
         setTimeout(() => {
@@ -108,16 +94,12 @@ class Modal extends React.Component {
         return (
             <div className={`modalAwesome ${classStatus} ${classStyle}`} style={{transitionDuration: `${this.duration/1000}s`}}>
                 <div className='modalAwesome-bg' style={{animationDuration: `${this.duration/1000/2}s`}}></div>
-
                 <button onClick={this.handleClose} className='modalAwesome-close'>Close</button>
-
-                <div className='modalAwesome-win' style={{transitionDuration: `${this.duration/1000}s`}}>
+                <div className='modalAwesome-win' style={{animationDuration: `${this.duration/1000}s`}}>
                     <div className='modalAwesome-win-header'>
                         {title}
                     </div>
-
                     {this.props.children}
-
                 </div>
             </div>
         )
