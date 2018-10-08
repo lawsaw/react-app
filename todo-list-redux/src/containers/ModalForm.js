@@ -33,9 +33,12 @@ export default class extends React.Component {
     }
 
     handleShowConfirm = () => {
-        if(!this.props.onResolveValidate()) {
-            return false;
+        if(this.props.onResolveValidate) {
+            if(!this.props.onResolveValidate()) {
+                return false;
+            }
         }
+
         this.setState(() => ({
             confirm: true
         }))

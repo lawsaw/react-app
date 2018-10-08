@@ -99,28 +99,39 @@ class TaskList extends React.Component {
         }
 
         let fields = [
-            {title: this.state.title},
-            {shortContent: this.state.shortContent},
-            {fullContent: this.state.fullContent}
+            {
+                name: 'title',
+                link: this.state.title
+            },
+            {
+                name: 'shortContent',
+                link: this.state.shortContent
+            },
+            {
+                name: 'fullContent',
+                link: this.state.fullContent
+            }
         ];
 
+        let rule = true;
+
         fields.forEach((field, key, arr) => {
-            console.log(field);
-            console.log(key);
-            console.log(arr);
+            newState[field['name']] = field['link'];
+            if(!field['link']) rule = false;
         })
 
         this.setState(() => ({
             valid: newState
         }))
 
-        console.log(this.state.valid);
+        //console.log(this.state.valid);
+        return rule;
 
 
     }
 
     handleModalAddResolveValidate = () => {
-        this.validate();
+        return this.validate();
     }
 
 
