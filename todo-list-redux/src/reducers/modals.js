@@ -24,5 +24,4 @@ export function modalReducer(state = initialState, action) {
             return state
     }
 
-    return state;
 }

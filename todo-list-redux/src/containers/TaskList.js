@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Task from './Task'
-import Modal from './Modal'
 import { addTask, deleteTask, completeTask } from "../actions/TasksAction";
 import ModalForm from "./ModalForm";
 
@@ -199,8 +198,8 @@ class TaskList extends React.Component {
                                 short={short}
                                 full={full}
                                 completed={completed}
-                                handleDeleteTask = {this.handleDeleteTask}
-                                completeTask = {this.props.completeTask}
+                                handleDeleteTask={this.handleDeleteTask}
+                                completeTask={this.props.completeTask}
                             />
                         ))
                     }

@@ -41,11 +41,11 @@ export function taskReducer(state = initialState, action) {
             ];
         case DELETE_TASK:
             return state.filter((task) => (
-                task.id != action.id
+                task.id !== action.id
             ))
         case COMPLETE_TASK:
             let newState = state.map(task => ({...task}));
-            let changedItem = newState.find(item => item.id == action.id);
+            let changedItem = newState.find(item => item.id === action.id);
             changedItem.completed = !changedItem.completed;
             console.log(newState);
             console.log(changedItem);
@@ -54,5 +54,4 @@ export function taskReducer(state = initialState, action) {
             return state
     }
 
-    return state;
 }

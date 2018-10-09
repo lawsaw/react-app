@@ -1,13 +1,7 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # dependencies
-origin/node_modules
-test-1/node_modules
-test-2/node_modules
-tic-tac-toe/node_modules
-todo-list-redux-test/node_modules
-todo-list-redux/node_modules
-clock/node_modules
+/node_modules
 
 # testing
 /coverage
@@ -22,4 +16,3 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/.idea
