@@ -29,7 +29,7 @@ export default class extends React.Component {
     setDegs = () => {
         let seconds = this.time.getSeconds()*6,
             minutes = this.time.getMinutes()*6,
-            hours = this.time.getHours()*6;
+            hours = this.time.getHours() > 12 ? (this.time.getHours()-12)*30 : this.time.getHours()*30;
         this.setState(() => ({seconds, minutes, hours}))
     }
 
@@ -39,8 +39,22 @@ export default class extends React.Component {
         let hours = {transform: `rotateZ(${this.state.hours}deg)`}
         return(
             <div className="clock">
-                {this.time.getSeconds()}
-                -
+                {
+                    [1,2,3,4,5,6,7,8,9,10,11,12].map((digit) => (
+                        (
+                            <div className="clock-digit">
+                                <div className="clock-digit-value">
+                                    |
+                                </div>
+                            </div>
+                        )
+                    ))
+                }
+                <div className="clock-elec">
+                    {this.time.getHours()}:
+                    {this.time.getMinutes()}:
+                    {this.time.getSeconds() < 10 ? `0${this.time.getSeconds()}` : this.time.getSeconds()}
+                </div>
                 <div className="clock-point">
                     <div className="clock-point-decor"></div>
                     <div className="clock-handHandler">

@@ -1,6 +1,6 @@
 $clock: (
   'container': '.clock',
-  'size': 300,
+  'size': 250,
 
 );
 
@@ -11,6 +11,7 @@ $clock: (
   height: #{map-get($clock, 'size')}px;
   border: 1px solid grey;
   border-radius: 100%;
+  background: radial-gradient(lighten(black, 50%), black);
 
   &-point {
 
@@ -29,7 +30,7 @@ $clock: (
       position: absolute;
       width: 20px;
       height: 20px;
-      background-color: grey;
+      background-color: black;
       border-radius: 100%;
       left: 50%;
       top: 50%;
@@ -52,12 +53,13 @@ $clock: (
 
     position: relative;
     transform-origin: center top;
+    background-color: white;
+    border: 1px solid black;
 
     &--hour {
 
       width: 10px;
       height: #{map-get($clock, 'size')/3.5}px;
-      background-color: rgba(black, 0.2);
 
     }
 
@@ -65,7 +67,6 @@ $clock: (
 
       width: 8px;
       height: #{map-get($clock, 'size')/2.3}px;
-      background-color: rgba(black, 0.2);
       transform: rotateZ(180deg);
 
     }
@@ -74,10 +75,51 @@ $clock: (
 
       width: 4px;
       height: #{map-get($clock, 'size')/2.1}px;
-      background-color: rgba(black, 0.2);
 
     }
 
   }
 
+  &-elec {
+
+    position: absolute;
+    left: 50%;
+    top: 25%;
+    transform: translate3d(-50%, 0, 0);
+    color: black;
+    background-color: white;
+    border: 1px solid grey;
+    padding: 0 5px;
+
+  }
+
+  &-digit {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    text-align: center;
+    color: white;
+
+    @for $i from 1 through 12 {
+
+      &:nth-child(#{$i}) {
+
+        transform: rotate(30deg * $i);
+
+        .clock-digit-value {
+
+          //transform: rotate(-30deg * $i);
+
+        }
+
+      }
+
+    }
+
+  }
+
+
 }
+
