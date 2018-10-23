@@ -28,7 +28,7 @@ export default class extends React.Component {
                 value: 60,
             }, {
                 title: 'never',
-                value: null,
+                value: 0,
             },
         ];
     }
@@ -38,6 +38,8 @@ export default class extends React.Component {
         modalDeleteCookie: false,
         activeExpires: '',
         currentCookies: null,
+        cookiesSelectAllToDelete: false,
+        cookiesToDelete: [],
     }
 
     componentDidMount() {
@@ -119,7 +121,7 @@ export default class extends React.Component {
     }
 
     getCookiesNameList = () => {
-        console.log(document.cookie.length);
+        //console.log(document.cookie.length);
         if(!document.cookie.length) return false;
         let cookies = document.cookie.split(';');
         return cookies.map((item) => {
@@ -129,17 +131,31 @@ export default class extends React.Component {
         });
     }
 
-    handleCookieSelectForDeletion = (name, value) => {
+    handleCookieSelectForDeletion = (name, value, e) => {
+
+        let copy = [...this.state.cookiesToDelete];
         if(value) {
-            this.cookiesToDelete.push(name);
+            copy.push(name);
         } else {
-            this.arrayRemoveItem(this.cookiesToDelete, name);
+            this.arrayRemoveItem(copy, name);
         }
-        //console.log(`${name}: ${value}`)
+        this.setState(() => ({
+            cookiesToDelete: copy
+        }))
+
+        //e.currentTarget.checked = !e.currentTarget.checked;
+
+    }
+
+    handleCookieSelectForDeletion2 = (item, e) => {
+        console.log(item);
+        console.log(e.currentTarget.checked);
+        e.currentTarget.checked = !e.currentTarget.checked;
+        console.log(e.currentTarget.checked);
     }
 
     handleCookiesDeleteResolve = () => {
-        this.cookiesToDelete.forEach((cookie) => {
+        this.state.cookiesToDelete.forEach((cookie) => {
             this.deleteCookie(cookie);
         })
     }
@@ -154,8 +170,17 @@ export default class extends React.Component {
         return false;
     }
 
+    handleCookieSelectAllForDeletion = (name, value) => {
+
+        this.setState(() => ({
+            cookiesToDelete: this.state.cookiesToDelete.length == this.getCookiesNameList().length ? [] : this.getCookiesNameList()
+        }))
+
+    }
+
 
     render() {
+        let checked = this.state.cookiesSelectAllToDelete ? 'checked' : '';
         return (
             <React.Fragment>
                 <div className='container'>
@@ -253,15 +278,33 @@ export default class extends React.Component {
                             labelReject="Cancel"
                         >
                             <form>
+
                                 {
-                                    this.getCookiesNameList().length ? this.getCookiesNameList().map((item, index) => (
-                                        <label key={index} className="form-check">
-                                            <input onChange={(e) => {this.handleCookieSelectForDeletion(item, e.currentTarget.checked)}} className="form-check-input" type="checkbox" value="" />
-                                            <div className="form-check-label">
-                                                {item}
-                                            </div>
-                                        </label>
-                                    )) : <p>The is no cookies at all</p>
+                                    this.getCookiesNameList().length ?
+                                        (
+                                                <React.Fragment>
+                                                    <label className="form-check">
+                                                        <input onChange={() => {this.handleCookieSelectAllForDeletion()}} className="form-check-input" type="checkbox" value="" checked={this.state.cookiesToDelete.length == this.getCookiesNameList().length} />
+                                                        <div className="form-check-label">
+                                                            Select all
+                                                        </div>
+                                                    </label>
+                                                    <br />
+                                                    {
+                                                        this.getCookiesNameList().map((item, index) => (
+                                                            <label key={index} className="form-check">
+                                                                <input onChange={(e) => {this.handleCookieSelectForDeletion(item, e.currentTarget.checked)}} className="form-check-input" type="checkbox" checked={this.state.cookiesToDelete.indexOf(item) !== -1 ? true : false}  />
+                                                                <div className="form-check-label">
+                                                                    {item}
+                                                                </div>
+                                                            </label>
+                                                        ))
+                                                    }
+                                                </React.Fragment>
+
+
+                                        ) :
+                                        <p>The is no cookies at all</p>
                                 }
                             </form>
                         </ModalForm>
@@ -273,3 +316,4 @@ export default class extends React.Component {
         )
     }
 }
+
