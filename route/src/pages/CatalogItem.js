@@ -1,29 +1,41 @@
 import React from 'react'
-import { Link, Route } from 'react-router-dom'
-import Computers from './catalog/Computers'
+//import { Link, Route } from 'react-router-dom'
 
 export default class extends React.Component {
-    render() {
-        const { match } = this.props;
+
+    buildContent = (title, content) => {
         return (
             <div>
-                <h1>Catalog</h1>
-                <p>
-                    catalog list...
-                </p>
+                <h2>{title}</h2>
+                <p>{content}</p>
+            </div>
+        )
+    }
 
-                <ul className="nav flex-column">
-                    <li className="nav-item">
-                        <Link to={`${match.url}/computers`} className="nav-link">Computers</Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link to={`${match.url}/oranges`} className="nav-link">Oranges</Link>
-                    </li>
-                </ul>
+    getContent = () => {
+        const {item} = this.props.match.params;
+        let title, content;
+        switch (item) {
+            case 'computers':
+                title = 'Computers and electronics';
+                content = 'Content of computers...';
+                break;
+            case 'oranges':
+                title = 'Oranges and fruits';
+                content = 'Content of oranges...';
+                break;
+            default:
+                title = '404';
+                content = 'no page';
+                break;
+        }
+        return this.buildContent(title, content);
+    }
 
-                <Route exact path={`${match.url}/:someTest`} component={Computers} />
-                <Route exact path={`${match.path}`} render={() => <div>hdgfhdgfhdfghdgf</div>} />
-
+    render() {
+        return (
+            <div>
+                {this.getContent()}
             </div>
         )
     }

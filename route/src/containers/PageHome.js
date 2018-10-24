@@ -4,7 +4,7 @@ export default class extends React.Component {
     render() {
         return (
             <div>
-                Content of page 1
+                Content of page Home
             </div>
         )
     }
