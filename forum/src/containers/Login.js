@@ -12,11 +12,27 @@ class Login extends React.Component {
         loginName: ''
     }
 
+    componentDidMount() {
+        const name = getCookie('user');
+        if(name.length) {
+            this.setState(() => ({
+                loginName: name
+            }));
+        }
+    }
+
     login = () => {
-        this.props.logIn(this.state.loginName);
+
+        const { loginName } = this.state;
+        if(loginName.length > 3) {
+            this.props.logIn(this.state.loginName);
+            return true;
+        } else {
+            console.log('Error))');
+            return false;
+        }
         // console.log(this.state.loginName);
         //console.log(this.props.auth);
-        return true;
     }
 
     logout = () => {
@@ -66,7 +82,7 @@ class Login extends React.Component {
                             styleDisappear='modalAwesome--toZoomIn'
                             onClose={this.handleLoginModal}
                             onResolve={this.login}
-                            onReject={(action) => {}}
+                            onReject={() => {}}
                         >
                             <div>
                                 <div className="form-group">
@@ -89,7 +105,7 @@ class Login extends React.Component {
                             styleDisappear='modalAwesome--toZoomIn'
                             onClose={this.handleLogoutModal}
                             onResolve={this.logout}
-                            onReject={(action) => {}}
+                            onReject={() => {}}
                         >
                         </ModalConfirm>
 
