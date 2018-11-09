@@ -1,0 +1,78 @@
+#{map-get($dropdownAwesome, 'container')} {
+
+
+  &-front {
+
+    margin: 25px;
+
+    #{map-get($buttonAwesome, 'container')}-icon--after #{map-get($buttonAwesome, 'container')}-icon-image {
+
+      transition: all 0.3s ease 0s;
+      transform-origin: center center;
+
+    }
+
+    &--active {
+
+      #{map-get($buttonAwesome, 'container')}-icon--after #{map-get($buttonAwesome, 'container')}-icon-image {
+
+        transform: rotateZ(180deg);
+
+      }
+
+    }
+
+  }
+
+  &-back {
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    padding: 15px;
+    background-color: red;
+
+    animation-iteration-count: 1;
+    animation-timing-function: ease;
+    animation-delay: 0s;
+    animation-direction: normal;
+    animation-play-state: running;
+    animation-fill-mode: both;
+
+    &--appear {
+
+      animation-name: dropdownAwesome-fromBottom;
+
+    }
+
+    &--disappear {
+
+      animation-name: dropdownAwesome-toBottom;
+
+    }
+
+  }
+
+
+}
+
+
+@keyframes dropdownAwesome-fromBottom {
+  from {
+    transform-origin: center center;
+    transform: translate3d(0, 50px, 0);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes dropdownAwesome-toBottom {
+  to {
+    transform: translate3d(0, 50px, 0);
+    opacity: 0;
+  }
+}

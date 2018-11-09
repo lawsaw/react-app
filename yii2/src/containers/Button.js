@@ -3,24 +3,33 @@ import cx from 'classnames';
 import Svg from './Svg';
 import renderHTML from 'react-render-html';
 
+
+
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStroopwafel, faCoffee, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faStroopwafel, faCoffee, faAngleDown);
+
 export default class extends React.Component {
 
     static defaultProps = {
         className: [],
         size: 'sizeL',
-        color: 'lightblue',
+        theme: 'blue',
         tag: 'a',
         iconBefore: {
             className: '',
-            type: null, //svg img block
+            type: null, //svg img fa block
             value: 5,
         },
         iconAfter: {
             className: '',
-            type: null, //svg img block
+            type: null, //svg img fa block
             value: 5,
         },
-        attr: {},
+        href: null,
+        linkAttr: {},
         onClick: () => {}
     }
     
@@ -32,9 +41,11 @@ export default class extends React.Component {
             <div className={cx(`buttonAwesome-icon buttonAwesome-icon--${pos}`, className)}>
                 {
                     type === 'img' ?
-                        <img src={value} />
+                            <img src={value} alt='' className={`buttonAwesome-icon-image`} />
                         : type === 'svg' ?
-                        <Svg icon={value} />
+                            <Svg icon={value} className={`buttonAwesome-icon-image`} />
+                        : type === 'fa' ?
+                            <FontAwesomeIcon icon={value} className={`buttonAwesome-icon-image`} />
                         : type === 'block' ?
                             <div className={`buttonAwesome-icon-image`}>{renderHTML(value)}</div>
                         : null
@@ -44,7 +55,7 @@ export default class extends React.Component {
     }
     
     render() {
-        const { className, tag, children, size, color, attr, iconBefore, iconAfter, onClick } = this.props;
+        const { className, tag, children, size, theme, linkAttr, href, iconBefore, iconAfter, onClick, ...otherProps } = this.props;
         const content = (
             <React.Fragment>
                 {this.renderIcon(iconBefore, 'before')}
@@ -62,12 +73,16 @@ export default class extends React.Component {
         );
         const options = {
             className: 'buttonAwesome-content',
-            onClick: onClick,
-            ...attr
+            onClick,
+            href,
+            ...linkAttr
         };
         const body = React.createElement(tag, options, content);
         return (
-            <div className={cx(`buttonAwesome`, this.buildClass(size), this.buildClass(color), className)}>
+            <div
+                className={cx(`buttonAwesome`, this.buildClass(`size${size}`), this.buildClass(theme), className)}
+                {...otherProps}
+            >
                 {body}
             </div>
         )

@@ -1,9 +1,12 @@
 import React from 'react';
 import '../styles/style.scss';
-import {apiGet, apiPost} from '../helpers';
+import {apiPost} from '../helpers';
 import renderHTML from 'react-render-html';
 import Button from './Button';
 import Svg from './Svg';
+import Dropdown from './Dropdown';
+
+
 
 export default class extends React.Component {
 
@@ -37,14 +40,10 @@ export default class extends React.Component {
             })
     }
 
-    convertToHTML = (str) => {
-
-            let tmp = document.implementation.createHTMLDocument();
-            tmp.body.innerHTML = str;
-            return tmp.body.children;
-
+    fuckClick = () => {
+        console.log('56рпарва')
     }
- 
+
     render() {
         const {content} = this.state;
         console.log(content);
@@ -54,10 +53,49 @@ export default class extends React.Component {
 
                 <Svg icon='icon-balance' className='gfdsgdf' />
 
+
+                <Dropdown
+                    className='megaclass'
+                    test='56566'
+                    href='#suka'
+                    size='L'
+                    title='Открыть дропдаун'
+                    linkAttr={{
+                        'fuck': 6466
+                    }}
+                >
+                    content of dropdown
+                </Dropdown>
+
+                <Dropdown
+                    className='megaclass'
+                    test='56566'
+                    href='#suka'
+                    size='L'
+                    title='Открыть дропдаун 2'
+                    linkAttr={{
+                        'fuck': 6466
+                    }}
+                    iconBefore={{
+                        type: 'svg',
+                        value: 'icon-balance',
+                    }}
+                    iconAfter={{
+                        type: 'fa',
+                        value: 'angle-down',
+                    }}
+                >
+                    <ul>
+                        <li>link 1</li>
+                        <li><a href='#' onClick={this.fuckClick}>gffdg</a></li>
+                    </ul>
+                </Dropdown>
+
+
                 <Button
-                    size='sizeM'
-                    color='lightblue'
-                    attr={{href: '#'}}
+                    size='M'
+                    theme='green'
+                    href='#pizda'
                     iconBefore={{
                         type: 'svg',
                         value: 'icon-balance',

@@ -139,7 +139,7 @@
 
 
 
-  &--lightblue {
+  &--blue {
 
     #{map-get($buttonAwesome, 'container')}-content {
 
@@ -168,6 +168,49 @@
         }
         #{map-get($buttonAwesome, 'container')}-icon {
           background-color: darken(darken(darken(lightblue, 5%), 5%), 5%);
+        }
+      }
+
+      &:focus {
+        outline: 1px dotted red;
+        #{map-get($buttonAwesome, 'container')}-title {}
+        #{map-get($buttonAwesome, 'container')}-icon {}
+      }
+
+    }
+
+  }
+
+
+  &--green {
+
+    #{map-get($buttonAwesome, 'container')}-content {
+
+      color: $colorWhite;
+
+      #{map-get($buttonAwesome, 'container')}-title {
+        background-color: lightgreen;
+      }
+      #{map-get($buttonAwesome, 'container')}-icon {
+        background-color: darken(lightgreen, 5%);
+      }
+
+      &:hover,
+      &:focus {
+        #{map-get($buttonAwesome, 'container')}-title {
+          background-color: darken(lightgreen, 5%);
+        }
+        #{map-get($buttonAwesome, 'container')}-icon {
+          background-color: darken(darken(lightgreen, 5%), 5%);
+        }
+      }
+
+      &:active {
+        #{map-get($buttonAwesome, 'container')}-title {
+          background-color: darken(darken(lightgreen, 5%), 5%);
+        }
+        #{map-get($buttonAwesome, 'container')}-icon {
+          background-color: darken(darken(darken(lightgreen, 5%), 5%), 5%);
         }
       }
 
