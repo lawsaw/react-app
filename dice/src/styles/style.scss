@@ -1,0 +1,26 @@
+@import 'adds/bootstrap.min';
+@import 'adds/area';
+@import 'adds/cubeAwesome';
+
+.wrap {
+
+  perspective: 1300px;
+
+
+}
+
+.area {
+
+  width: 500px;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(black, 0.1);
+
+
+
+}
+
+
+
