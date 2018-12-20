@@ -1,0 +1,22 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/print";
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/utilities/flex";
+@import "~bootstrap/scss/utilities/display";
+
+@import "adds/colors/colors";
+@import "adds/config/mixins";
+@import "adds/config/vars";
+@import "adds/config/custom-modules";
+
+@import "adds/all-in-one";
+@import "adds/clock";
+@import "adds/dice/dice";
+@import "adds/dice/cubeAwesome";
+@import "adds/tic-tac-toe";
+@import "adds/modalAwesome";
+@import "adds/modulesAwesome/buttonAwesome";
+@import "adds/modulesAwesome/dropdownAwesome";

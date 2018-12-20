@@ -1,0 +1,38 @@
+.wrap {
+
+  &,
+  &-container,
+  &-row {
+
+    min-height: 100vh;
+
+  }
+
+  &-menu,
+  &-page {
+
+    padding-top: 50px;
+    padding-bottom: 50px;
+
+  }
+
+  &-menu {
+
+    background-color: rgba(grey, 0.2);
+
+  }
+
+  &-page {
+
+    display: flex;
+    justify-content: center;
+
+  }
+
+}
+
+.page {
+
+  margin: 0 auto;
+
+}

@@ -1,0 +1,37 @@
+$buttonAwesome: (
+  'container': '.buttonAwesome',
+  'delta': 10px,
+  'size': (
+    'sizeS' : (
+    'height'        : 15px,
+    'space'         : 5px,
+    'font-size'     : 10px,
+    ),
+    'sizeM' : (
+      'height'      : 25px,
+      'space'       : 15px,
+      'font-size'   : 12px,
+    ),
+    'sizeL' : (
+      'height'      : 35px,
+      'space'       : 25px,
+      'font-size'   : 14px,
+    ),
+    'sizeXL' : (
+      'height'      : 55px,
+      'space'       : 20px,
+      'font-size'   : 24px,
+    ),
+  ),
+);
+
+$dropdownAwesome: (
+  'container': '.dropdownAwesome',
+  'arrowWidth': 30,
+  'backBg': #f1f1f1,
+  'backBgOddcolor': #aecafc,
+  'wrapBgColor': #f1f1f1,
+  'wrapActiveColor': #aecafc,
+  'wrapBgOddColor': #aecafc,
+  'wrapSpace': 50,
+);
