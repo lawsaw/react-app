@@ -25,15 +25,19 @@ export default class extends React.Component {
         duration: 300,
     }
 
+    componentDidMount() {
+        this.setState(() => ({
+            positionData: this.frontend.getBoundingClientRect(),
+        }))
+        window.addEventListener('click', this.click, false);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('click', this.click, false);
+    }
+
     open = () => {
         const {duration} = this.props;
-        const {dropdownShow} = this.state;
-        if(dropdownShow === true) {
-            console.log('No opening');
-            this.close();
-            return false
-        };
-        console.log('opening');
         this.setState(() => ({
             dropdownShow: true,
             classStatus: 'dropdownAwesome-back--appear',
@@ -48,13 +52,6 @@ export default class extends React.Component {
 
     close = () => {
         const {duration} = this.props;
-        const {dropdownShow} = this.state;
-        if(dropdownShow === false) {
-            console.log('No closing');
-            return false;
-        };
-        console.log('closing');
-        window.removeEventListener('click', this.clickListener, false);
         this.setState(() => ({
             classStatus: 'dropdownAwesome-back--disappear',
             classActive: '',
@@ -65,8 +62,6 @@ export default class extends React.Component {
                 classStatus: ''
             }));
         }, duration)
-
-
     }
 
     getPosition = () => {
@@ -80,40 +75,41 @@ export default class extends React.Component {
         }
     }
 
-    componentDidMount() {
-        this.setState(() => ({
-            positionData: this.frontend.getBoundingClientRect(),
-        }))
-    }
-
-    clickListener = (e) => {
-        if(e.target !== this.backend || this.isDescendant(this.backend, e.target)) {
-            console.log('target is the same');
-            return false
-        };
-        console.log('target is NOT the same');
-        this.close();
-    }
-
-    setBackOpt = (element) => {
-        if(!element) return false;
-        const {duration} = this.props;
-        this.backend = element;
-        setTimeout(() => {
-            window.addEventListener('click', this.clickListener, false);
-        }, duration)
-
+    click = (e) => {
+        const {dropdownShow} = this.state;
+        if(e.target === this.frontend || this.isDescendant(this.frontend, e.target)) {
+            if(dropdownShow) {
+                this.close();
+                return false;
+            } else {
+                this.open();
+                return false;
+            }
+        }
+        if(dropdownShow) {
+            if(e.target === this.backend || this.isDescendant(this.backend, e.target)) {
+                return false;
+            } else {
+                this.close();
+            }
+        }
     }
 
     isDescendant = (parent, child) => {
-        var node = child.parentNode;
+        let node = child.parentNode;
         while (node != null) {
-            if (node == parent) {
+            if (node === parent) {
                 return true;
             }
             node = node.parentNode;
         }
         return false;
+    }
+
+    setFrontOptions = (element) => {
+        if(!element) return false;
+        this.frontend = element;
+        window.addEventListener('click', this.click);
     }
 
     renderFront = () => {
@@ -125,9 +121,8 @@ export default class extends React.Component {
                 className={cx(`dropdownAwesome-front`, classActive, className)}
                 linkAttr={{
                     ...linkAttr,
-                    ref: el => (this.frontend = el)
+                    ref: el => this.setFrontOptions(el)
                 }}
-                onClick={this.open}
             >
                 {title}
             </Button>
@@ -142,12 +137,12 @@ export default class extends React.Component {
             <div
                 className={cx(`dropdownAwesome-back`, classStatus)}
                 style={{
-                    left: `${posX}px`,
-                    top: `${posY}px`,
-                    minWidth: `${width}px`,
-                    animationDuration: `${duration/1000}s`
+                    left:               `${posX}px`,
+                    top:                `${posY}px`,
+                    minWidth:           `${width}px`,
+                    animationDuration:  `${duration/1000}s`
                 }}
-                ref={(el) => this.setBackOpt(el)}
+                ref={el => this.backend = el}
             >
                 {children}
             </div>

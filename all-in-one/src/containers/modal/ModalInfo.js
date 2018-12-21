@@ -3,10 +3,10 @@ import Modal from './Modal'
 
 export default class extends React.Component {
 
-    constructor(props) {
-        super(props);
-        //this.modalRef = React.createRef();
-    }
+    // constructor(props) {
+    //     super(props);
+    //     //this.modalRef = React.createRef();
+    // }
 
     setRef = (ref) => {
         if(ref) {

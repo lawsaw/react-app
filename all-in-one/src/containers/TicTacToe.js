@@ -31,7 +31,7 @@ export default class extends Component {
                 cloneArr.push(this.copyDeep(obj[i]));
             }
             res = cloneArr;
-        } else if(Object.prototype.toString(obj) == 'Object object') {
+        } else if(Object.prototype.toString(obj) === 'Object object') {
             let cloneObj = {};
             for(let i in obj) {
                 cloneObj[i] = this.copyDeep(obj[i]);
@@ -46,7 +46,9 @@ export default class extends Component {
 
     togglePlayer = () => {
         let { symbol } = this.state;
-        this.state.symbol = symbol == 'X' ? '0' : 'X';
+        this.setState(() => ({
+            symbol: symbol === 'X' ? '0' : 'X'
+        }))
     }
 
     resetGame = () => {
@@ -58,7 +60,10 @@ export default class extends Component {
         this.setState(() => ({
             grid: gridNew
         }));
-        this.state.symbol = 'X';
+        this.setState(() => ({
+            symbol: 'X'
+        }));
+        return false;
     }
 
     isWinner = () => {
@@ -130,17 +135,18 @@ export default class extends Component {
             grid: gridNew
         }));
 
+        return id;
     }
 
     renderGrid = () => {
         let { grid } = this.state;
-        return grid.map((item, index) => {
+        return grid.map((item, index1) => {
             let row = (
-                <div className="grid-row">
+                <div key={index1} className="grid-row">
                     {
-                        item.map((el, index) => {
+                        item.map((el, index2) => {
                             return (
-                                <div className="grid-cell" onClick={() => this.handleClick(el.id)}>
+                                <div key={index2} className="grid-cell" onClick={() => this.handleClick(el.id)}>
                                     {el.value}
                                 </div>
                             )
