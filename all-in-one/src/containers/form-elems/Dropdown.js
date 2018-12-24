@@ -15,25 +15,33 @@ export default class extends React.Component {
 
     state = {
         dropdownShow: false,
-        positionData: null,
         classStatus: '',
-        classActive: ''
+        classActive: '',
+        position: {
+            x: 0,
+            y: 0,
+            width: 0
+        }
     }
 
     static defaultProps = {
+        button: true,
         title: 'Dropdown',
         duration: 300,
+        closeOnClick: true,
     }
 
     componentDidMount() {
-        this.setState(() => ({
-            positionData: this.frontend.getBoundingClientRect(),
-        }))
+        this.setPosition();
         window.addEventListener('click', this.click, false);
+        window.addEventListener('resize', this.setPosition, false);
+        window.addEventListener('scroll', this.setPosition, false);
     }
 
     componentWillUnmount() {
         window.removeEventListener('click', this.click, false);
+        window.removeEventListener('resize', this.setPosition, false);
+        window.removeEventListener('scroll', this.setPosition, false);
     }
 
     open = () => {
@@ -64,8 +72,19 @@ export default class extends React.Component {
         }, duration)
     }
 
+    setPosition = () => {
+        const position = this.getPosition();
+        this.setState(() => ({
+            position: {
+                x: position.posX,
+                y: position.posY,
+                width: position.width,
+            }
+        }));
+    }
+
     getPosition = () => {
-        const {positionData} = this.state;
+        const positionData = this.frontend.getBoundingClientRect();
         if(!positionData) return false;
         const {height, left, top, width} = positionData;
         return {
@@ -76,6 +95,7 @@ export default class extends React.Component {
     }
 
     click = (e) => {
+        const {closeOnClick} = this.props;
         const {dropdownShow} = this.state;
         if(e.target === this.frontend || this.isDescendant(this.frontend, e.target)) {
             if(dropdownShow) {
@@ -88,6 +108,7 @@ export default class extends React.Component {
         }
         if(dropdownShow) {
             if(e.target === this.backend || this.isDescendant(this.backend, e.target)) {
+                if(e.target.getAttribute('href') && closeOnClick) this.close();
                 return false;
             } else {
                 this.close();
@@ -113,11 +134,15 @@ export default class extends React.Component {
     }
 
     renderFront = () => {
-        const {className, linkAttr, title} = this.props;
+        const {className, linkAttr, title, button} = this.props;
         const {classActive} = this.state;
-        return (
+        const buttonProps = {};
+        Object.keys(this.props).filter(key => (key !== 'button' && key !== 'duration' && key !== 'closeOnClick')).map(key => (
+            buttonProps[key] = this.props[key]
+        ));
+        return button ? (
             <Button
-                {...this.props}
+                {...buttonProps}
                 className={cx(`dropdownAwesome-front`, classActive, className)}
                 linkAttr={{
                     ...linkAttr,
@@ -126,13 +151,14 @@ export default class extends React.Component {
             >
                 {title}
             </Button>
-        )
+        )  : <span
+                ref={el => this.setFrontOptions(el)}
+            >{title}</span>
     }
 
     renderBack = () => {
-        const {posX, posY, width} = this.getPosition();
         const {children, duration} = this.props;
-        const {classStatus} = this.state;
+        const {classStatus, position: {x:posX, y:posY, width}} = this.state;
         return (
             <div
                 className={cx(`dropdownAwesome-back`, classStatus)}
@@ -151,12 +177,14 @@ export default class extends React.Component {
 
     render() {
         const {dropdownShow} = this.state;
+        const front = this.renderFront();
+        const back = this.renderBack();
         return (
             <React.Fragment>
-                {this.renderFront()}
+                {front}
                 {
                     dropdownShow && ReactDOM.createPortal(
-                        this.renderBack(),
+                        back,
                         dropdownRoot
                     )
                 }

@@ -17,6 +17,8 @@ $modalAwesome: (
   flex-direction: row;
   flex-wrap: nowrap;
   overflow: hidden;
+  width: 100%;
+  min-height: 100%;
 
   &-bg {
 
@@ -26,8 +28,6 @@ $modalAwesome: (
     right: 0;
     bottom: 0;
     background-color: rgba(black, 0.3);
-
-    //animation-duration: 0.3s;
     animation-iteration-count: 1;
     animation-timing-function: linear;
     animation-delay: 0s;
@@ -39,7 +39,7 @@ $modalAwesome: (
 
   &-close {
 
-    position: absolute;
+    position: fixed;
     right: 0;
     top: 0;
 
@@ -52,7 +52,6 @@ $modalAwesome: (
     margin: 0 auto;
     padding: 20px;
     width: 100%;
-
     animation-iteration-count: 1;
     animation-timing-function: ease;
     animation-delay: 0s;
@@ -211,19 +210,19 @@ $modalAwesome: (
   &--appearing #{map-get($modalAwesome, 'container')}-bg { animation-name: opacityIn; }
   &--disappearing #{map-get($modalAwesome, 'container')}-bg { animation-name: opacityOut; }
 
-  &--appearing#{map-get($modalAwesome, 'container')}--fromZoomIn #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-fromZoomIn; }
-  &--appearing#{map-get($modalAwesome, 'container')}--fromZoomOut #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-fromZoomOut; }
-  &--appearing#{map-get($modalAwesome, 'container')}--fromLeft #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-fromLeft; }
-  &--appearing#{map-get($modalAwesome, 'container')}--fromRight #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-fromRight; }
-  &--appearing#{map-get($modalAwesome, 'container')}--fromUp #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-fromUp; }
-  &--appearing#{map-get($modalAwesome, 'container')}--fromDown #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-fromDown; }
+  &--appearing#{map-get($modalAwesome, 'container')}--fromZoomIn #{map-get($modalAwesome, 'container')}-win   { animation-name: modalAwesome-fromZoomIn; }
+  &--appearing#{map-get($modalAwesome, 'container')}--fromZoomOut #{map-get($modalAwesome, 'container')}-win  { animation-name: modalAwesome-fromZoomOut; }
+  &--appearing#{map-get($modalAwesome, 'container')}--fromLeft #{map-get($modalAwesome, 'container')}-win     { animation-name: modalAwesome-fromLeft; }
+  &--appearing#{map-get($modalAwesome, 'container')}--fromRight #{map-get($modalAwesome, 'container')}-win    { animation-name: modalAwesome-fromRight; }
+  &--appearing#{map-get($modalAwesome, 'container')}--fromUp #{map-get($modalAwesome, 'container')}-win       { animation-name: modalAwesome-fromUp; }
+  &--appearing#{map-get($modalAwesome, 'container')}--fromDown #{map-get($modalAwesome, 'container')}-win     { animation-name: modalAwesome-fromDown; }
 
-  &--disappearing#{map-get($modalAwesome, 'container')}--toZoomIn #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-toZoomIn; }
+  &--disappearing#{map-get($modalAwesome, 'container')}--toZoomIn #{map-get($modalAwesome, 'container')}-win  { animation-name: modalAwesome-toZoomIn; }
   &--disappearing#{map-get($modalAwesome, 'container')}--toZoomOut #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-toZoomOut; }
-  &--disappearing#{map-get($modalAwesome, 'container')}--toLeft #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-toLeft; }
-  &--disappearing#{map-get($modalAwesome, 'container')}--toRight #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-toRight; }
-  &--disappearing#{map-get($modalAwesome, 'container')}--toUp #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-toUp; }
-  &--disappearing#{map-get($modalAwesome, 'container')}--toDown #{map-get($modalAwesome, 'container')}-win { animation-name: modalAwesome-toDown; }
+  &--disappearing#{map-get($modalAwesome, 'container')}--toLeft #{map-get($modalAwesome, 'container')}-win    { animation-name: modalAwesome-toLeft; }
+  &--disappearing#{map-get($modalAwesome, 'container')}--toRight #{map-get($modalAwesome, 'container')}-win   { animation-name: modalAwesome-toRight; }
+  &--disappearing#{map-get($modalAwesome, 'container')}--toUp #{map-get($modalAwesome, 'container')}-win      { animation-name: modalAwesome-toUp; }
+  &--disappearing#{map-get($modalAwesome, 'container')}--toDown #{map-get($modalAwesome, 'container')}-win    { animation-name: modalAwesome-toDown; }
 
 }
 
@@ -232,21 +231,44 @@ $modalAwesome: (
 
 #modal-root {
 
-  @for $i from 2 through map_get($modalAwesome, 'maxModals') {
+  //@for $i from 2 through map_get($modalAwesome, 'maxModals') {
+  //
+  //  &[counter='#{$i}'] {
+  //
+  //    @for $r from 1 through $i - 1 {
+  //
+  //      #{map-get($modalAwesome, 'container')}:nth-child(#{$r}) {
+  //        transform: scale( (map_get($modalAwesome, 'maxModals') - $i + $r) * 1 / map_get($modalAwesome, 'maxModals') );
+  //      }
+  //
+  //    }
+  //
+  //    #{map-get($modalAwesome, 'container')}:nth-child($i) {
+  //      transform: scale(1);
+  //      filter: blur(0px);
+  //    }
+  //
+  //  }
+  //
+  //}
 
-    &[counter='#{$i}'] {
 
-      @for $r from 1 through $i - 1 {
+  #{map-get($modalAwesome, 'container')}#{map-get($modalAwesome, 'container')}--active {
 
-        #{map-get($modalAwesome, 'container')}:nth-child(#{$r}) {
-          transform: scale( (map_get($modalAwesome, 'maxModals') - $i + $r) * 1 / map_get($modalAwesome, 'maxModals') );
-        }
+    &:nth-last-of-type(1) {
 
-      }
+      position: relative;
+      //transform: scale(1);
+      //filter: blur(0px);
 
-      #{map-get($modalAwesome, 'container')}:nth-child($i) {
-        transform: scale(1);
-        filter: blur(0px);
+    }
+
+    @for $i from 2 through map_get($modalAwesome, 'maxModals') {
+
+      &:nth-last-of-type(#{$i}) {
+
+        transform: scale( (map_get($modalAwesome, 'maxModals')- $i + 1) * 1 / map_get($modalAwesome, 'maxModals') );
+
       }
 
     }

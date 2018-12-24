@@ -5,7 +5,7 @@
 
     margin: 25px;
 
-    #{map-get($buttonAwesome, 'container')}-icon--after #{map-get($buttonAwesome, 'container')}-icon-image {
+    #{map-get($buttonAwesome, 'container')}-icon--animated #{map-get($buttonAwesome, 'container')}-icon-image {
 
       transition: all 0.3s ease 0s;
       transform-origin: center center;
@@ -14,7 +14,7 @@
 
     &--active {
 
-      #{map-get($buttonAwesome, 'container')}-icon--after #{map-get($buttonAwesome, 'container')}-icon-image {
+      #{map-get($buttonAwesome, 'container')}-icon--animated #{map-get($buttonAwesome, 'container')}-icon-image {
 
         transform: rotateZ(180deg);
 
@@ -39,6 +39,8 @@
     animation-direction: normal;
     animation-play-state: running;
     animation-fill-mode: both;
+
+    transition: all 0.1s ease 0s;
 
     &--appear {
 

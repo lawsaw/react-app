@@ -3,6 +3,7 @@ import Dropdown from "./Dropdown";
 import Svg from "./Svg";
 import Button from "./Button";
 import {Link} from "react-router-dom";
+import CustomLink from "./CustomLink";
 
 export default class extends Component {
 
@@ -17,6 +18,7 @@ export default class extends Component {
 
 
                 <Dropdown
+                    button={false}
                     className='megaclass'
                     test='56566'
                     href='#suka'
@@ -29,9 +31,12 @@ export default class extends Component {
                     <ul>
                         <li>test</li>
                     </ul>
-                    <p><Link to='/tic-tac-toe'>Крестики-нолики</Link></p>
+                    <p><CustomLink to='/tic-tac-toe'>Крестики-нолики</CustomLink></p>
                     <p>test2</p>
                 </Dropdown>
+
+
+
 
                 <Dropdown
                     className='megaclass'
@@ -45,6 +50,7 @@ export default class extends Component {
                     iconBefore={{
                         type: 'fas',
                         value: 'angle-down',
+                        animated: true,
                     }}
                     iconAfter={{
                         type: 'fab',
@@ -53,7 +59,7 @@ export default class extends Component {
                 >
                     <ul>
                         <li>link 1</li>
-                        <li><a href='#test' onClick={this.fuckClick}>gffdg</a></li>
+                        <li><a href='#test'>gffdg</a></li>
                     </ul>
                 </Dropdown>
 

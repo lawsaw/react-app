@@ -20,11 +20,13 @@ export default class extends React.Component {
             className: '',
             type: null, //svg img fa block
             value: 5,
+            animated: false,
         },
         iconAfter: {
             className: '',
             type: null, //svg img fa block
             value: 5,
+            animated: false,
         },
         href: null,
         linkAttr: {},
@@ -42,9 +44,9 @@ export default class extends React.Component {
     }
 
     renderIcon = (icon, pos) => {
-        const { type, className, value } = icon;
+        const { type, className, value, animated } = icon;
         return type && (
-            <div className={cx(`buttonAwesome-icon buttonAwesome-icon--${pos}`, className)}>
+            <div className={cx(`buttonAwesome-icon buttonAwesome-icon--${pos}`, className, animated ? 'buttonAwesome-icon--animated' : '')}>
                 {
                     type === 'img' ?
                             <img src={value} alt='' className={`buttonAwesome-icon-image`} />

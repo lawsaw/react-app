@@ -1,3 +1,11 @@
+html, body, #root {
+
+  height: 100%;
+
+}
+
+
+
 .wrap {
 
   &,
@@ -34,5 +42,33 @@
 .page {
 
   margin: 0 auto;
+
+}
+
+
+#app-root {
+
+  position: relative;
+  width: 100%;
+
+  .modalActive & {
+
+    position: fixed;
+
+  }
+
+}
+
+#modal-root {
+
+  position: fixed;
+  width: 100%;
+  height: 100%;
+
+  .modalActive & {
+
+    position: relative;
+
+  }
 
 }

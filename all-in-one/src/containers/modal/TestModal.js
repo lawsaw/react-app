@@ -96,14 +96,30 @@ export default class extends React.Component {
             <div>
 
                 <h1>Модалки</h1>
-
+                <p> - </p>
+                <p> - </p>
+                <p> - </p>
+                <p> - </p>
+                <p> - </p>
+                <p> - </p>
+                <p> - </p>
+                <p> - </p>
+                <p> - </p>
+                <p> - </p>
+                <p> - </p>
+                <p> - </p>
                 <button onClick={(e) => {e.preventDefault(); this.handleModalInfoOpen()}}>Open Modal Info</button>
                 <button onClick={(e) => {e.preventDefault(); this.handleModalFormOpen()}}>Open Modal Form</button>
                 <button onClick={(e) => {e.preventDefault(); this.handleModalConfirmOpen()}}>Open Modal Confirm</button>
                 <button onClick={() => {this.handleModalCascadeOpen('modalCascade1')}}>Open Modal Cascade 1</button>
+                <p> - </p>
+                <p> - </p>
+                <p> - </p>
+                <p> - </p>
+                <p> - </p>
 
                 {
-                    this.state.modalInfo ? (
+                    this.state.modalInfo && (
 
                         <ModalInfo
                             title='Добавить задачу'
@@ -114,11 +130,11 @@ export default class extends React.Component {
                             info modal
                         </ModalInfo>
 
-                    ) : null
+                    )
                 }
 
                 {
-                    this.state.modalForm ? (
+                    this.state.modalForm && (
 
                         <ModalForm
                             title='Form'
@@ -131,11 +147,11 @@ export default class extends React.Component {
                             form modal
                         </ModalForm>
 
-                    ) : null
+                    )
                 }
 
                 {
-                    this.state.modalConfirm ? (
+                    this.state.modalConfirm && (
 
                         <ModalConfirm
                             title='Confirm'
@@ -147,12 +163,12 @@ export default class extends React.Component {
                         >
                         </ModalConfirm>
 
-                    ) : null
+                    )
                 }
 
 
                 {
-                    this.state.modalCascade1 ? (
+                    this.state.modalCascade1 && (
 
                         <ModalInfo
                             title='modalCascade1'
@@ -160,11 +176,40 @@ export default class extends React.Component {
                             styleDisappear='modalAwesome--toZoomOut'
                             onClose={() => {this.handleModalCascadeClose('modalCascade1')}}
                         >
-                            modalCascade1
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+                            modalCascade1<br />
+
                             <button onClick={() => {this.handleModalCascadeOpen('modalCascade2')}}>Open Modal Cascade 2</button>
 
                             {
-                                this.state.modalCascade2 ? (
+                                this.state.modalCascade2 && (
 
                                     <ModalInfo
                                         title='modalCascade2'
@@ -176,7 +221,7 @@ export default class extends React.Component {
                                         <button onClick={() => {this.handleModalCascadeOpen('modalCascade3')}}>Open Modal Cascade 3</button>
 
                                         {
-                                            this.state.modalCascade3 ? (
+                                            this.state.modalCascade3 && (
 
                                                 <ModalInfo
                                                     title='modalCascade3'
@@ -188,7 +233,7 @@ export default class extends React.Component {
                                                     <button onClick={() => {this.handleModalCascadeOpen('modalCascade4')}}>Open Modal Cascade 4</button>
 
                                                     {
-                                                        this.state.modalCascade4 ? (
+                                                        this.state.modalCascade4 && (
 
                                                             <ModalInfo
                                                                 title='modalCascade4'
@@ -200,7 +245,7 @@ export default class extends React.Component {
                                                                 <button onClick={() => {this.handleModalCascadeOpen('modalCascade5')}}>Open Modal Cascade 5</button>
 
                                                                 {
-                                                                    this.state.modalCascade5 ? (
+                                                                    this.state.modalCascade5 && (
 
                                                                         <ModalInfo
                                                                             title='modalCascade5'
@@ -211,27 +256,27 @@ export default class extends React.Component {
                                                                             modalCascade5
                                                                         </ModalInfo>
 
-                                                                    ) : null
+                                                                    )
                                                                 }
 
                                                             </ModalInfo>
 
-                                                        ) : null
+                                                        )
                                                     }
 
                                                 </ModalInfo>
 
-                                            ) : null
+                                            )
                                         }
 
                                     </ModalInfo>
 
-                                ) : null
+                                )
                             }
 
                         </ModalInfo>
 
-                    ) : null
+                    )
                 }
 
             </div>
