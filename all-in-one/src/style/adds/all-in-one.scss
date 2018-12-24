@@ -4,7 +4,10 @@ html, body, #root {
 
 }
 
-
+body {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
 
 .wrap {
 
@@ -54,6 +57,7 @@ html, body, #root {
   .modalActive & {
 
     position: fixed;
+    filter: blur(2px);
 
   }
 

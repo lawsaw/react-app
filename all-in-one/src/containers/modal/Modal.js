@@ -31,19 +31,32 @@ class Modal extends React.Component {
             }))
         }, this.duration);
 
-        if(modalRoot.children.length > 0) {
+        this.freeze();
+    }
+
+    freeze = () => {
+        if(modalRoot.children.length > 0 && appRoot.getAttribute('freezed') === null) {
+            const pos = window.scrollY;
+            appRoot.setAttribute('freezed', pos);
+            appRoot.style.top = `${-pos}px`;
             root.classList.add('modalActive');
+            console.log(`freeze on ${pos}`);
         }
     }
 
-    getWindowScrollTop = () => {
-
+    unFreeze = () => {
+        if(modalRoot.children.length <= 1 && appRoot.getAttribute('freezed').length) {
+            root.classList.remove('modalActive');
+            const pos = Math.abs(parseInt(appRoot.getAttribute('freezed')));
+            appRoot.style.top = '';
+            appRoot.removeAttribute('freezed');
+            window.scrollTo(0, pos);
+            console.log(`unFreeze on ${pos}`);
+        }
     }
 
     componentWillUnmount() {
-        if(modalRoot.children.length <= 1) {
-            root.classList.remove('modalActive');
-        }
+        this.unFreeze();
     }
 
     close = () => {

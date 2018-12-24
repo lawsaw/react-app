@@ -94,7 +94,6 @@ export default class extends React.Component {
     render() {
         return (
             <div>
-
                 <h1>Модалки</h1>
                 <p> - </p>
                 <p> - </p>
@@ -117,7 +116,6 @@ export default class extends React.Component {
                 <p> - </p>
                 <p> - </p>
                 <p> - </p>
-
                 {
                     this.state.modalInfo && (
 

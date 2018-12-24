@@ -17,7 +17,7 @@ export default class extends React.Component {
 
     handleClose = () => {
         this.modalRef.handleClose()
-        console.log('gdfgs');
+        //console.log('gdfgs');
     }
 
     render() {
