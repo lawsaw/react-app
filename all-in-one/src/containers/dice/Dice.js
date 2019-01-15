@@ -19,6 +19,7 @@ export default class extends Component {
         return (
             <React.Fragment>
                 <div className={`dice-area`}>
+                    <div className={`dice-area-inner`} />
                     <Cub
                         value={value}
                     />

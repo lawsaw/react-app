@@ -15,52 +15,82 @@ export default class extends Component {
         return (
             <div className={`page`}>
 
-
-
-                <Dropdown
-                    button={false}
-                    className='megaclass'
-                    test='56566'
-                    href='#suka'
-                    size='L'
-                    title='Открыть дропдаун'
-                    linkAttr={{
-                        'fuck': 6466
-                    }}
-                >
-                    <ul>
-                        <li>test</li>
-                    </ul>
-                    <p><CustomLink to='/tic-tac-toe'>Крестики-нолики</CustomLink></p>
-                    <p>test2</p>
+                <Dropdown>
+                    dropdown with no props at all
                 </Dropdown>
 
-
-
+                <Dropdown
+                    front={<strong><i>tags</i> <i>front</i></strong>}
+                >
+                    <p>dropdown with TAGs front</p>
+                </Dropdown>
 
                 <Dropdown
-                    className='megaclass'
-                    test='56566'
-                    href='#suka'
-                    size='L'
-                    title='Открыть дропдаун 2'
-                    linkAttr={{
-                        'fuck': 6466
-                    }}
-                    iconBefore={{
-                        type: 'fas',
-                        value: 'angle-down',
-                        animated: true,
-                    }}
-                    iconAfter={{
-                        type: 'fab',
-                        value: 'android',
-                    }}
+                    front={'string dropdown'}
                 >
+                    <p>dropdown with STRING front</p>
+                    <CustomLink to='/tic-tac-toe'>Крестики-нолики</CustomLink>
+                </Dropdown>
+
+                <Dropdown
+                    front={
+                        <Button
+                            className='megaclass'
+                            test='56566'
+                            href='#suka'
+                            size='L'
+                            linkAttr={{
+                                'fuck': 6466
+                            }}
+                            iconBefore={{
+                                type: 'fas',
+                                value: 'angle-down',
+                                animated: true,
+                            }}
+                            iconAfter={{
+                                type: 'fab',
+                                value: 'android',
+                            }}
+                        >
+                            Открыть дропдаун 2
+                        </Button>
+                    }
+                >
+                    <p>dropdown with COMPONENT front</p>
                     <ul>
                         <li>link 1</li>
                         <li><a href='#test'>gffdg</a></li>
                     </ul>
+                    <Dropdown
+                        front={
+                            <Button
+                                className='megaclass'
+                                test='56566'
+                                href='#suka'
+                                size='L'
+                                linkAttr={{
+                                    'fuck': 6466
+                                }}
+                                iconBefore={{
+                                    type: 'fas',
+                                    value: 'angle-down',
+                                    animated: true,
+                                }}
+                                iconAfter={{
+                                    type: 'fab',
+                                    value: 'android',
+                                }}
+                            >
+                                Открыть дропдаун 2
+                            </Button>
+                        }
+                    >
+                        <p>dropdown with COMPONENT front</p>
+                        <ul>
+                            <li>link 1</li>
+                            <li><a href='#test'>gffdg</a></li>
+                        </ul>
+                    </Dropdown>
                 </Dropdown>
 
                 <Button
@@ -79,7 +109,7 @@ export default class extends Component {
                         console.log('click');
                     }}
                 >
-                    Button
+                    Just Button
                 </Button>
 
             </div>

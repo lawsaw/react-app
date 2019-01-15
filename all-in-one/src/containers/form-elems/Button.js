@@ -71,9 +71,27 @@ export default class extends React.Component {
             return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
         }).replace(/\s+/g, '');
     }
-    
+
+    getNativeAttr = (pr) => {
+        const LIBRARY = [
+            'ref',
+        ],
+            nativePr = {},
+            otherPr = {};
+        for(let key in pr) {
+            let currentKey = key.toLowerCase();
+            if(LIBRARY.indexOf(currentKey) >= 0) {
+                nativePr[currentKey] = pr[key];
+            } else {
+                otherPr[currentKey] = pr[key];
+            }
+        }
+        return { nativePr, otherPr };
+    }
+
     render() {
         const { className, tag, children, size, theme, linkAttr, href, iconBefore, iconAfter, onClick, ...otherProps } = this.props;
+        const { nativePr, otherPr } = this.getNativeAttr(otherProps);
         const content = (
             <React.Fragment>
                 {this.renderIcon(iconBefore, 'before')}
@@ -99,7 +117,8 @@ export default class extends React.Component {
         return (
             <div
                 className={cx(`buttonAwesome`, this.buildClass(`size${size}`), this.buildClass(theme), className)}
-                {...otherProps}
+                {...nativePr}
+                {...otherPr}
             >
                 {body}
             </div>

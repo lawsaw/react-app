@@ -1,6 +1,6 @@
 $cubeAwesome: (
-        'container': '.cubeAwesome',
-        'size': 150,
+  'container': '.cubeAwesome',
+  'size': 150,
 );
 
 #{map-get($cubeAwesome, 'container')} {
@@ -14,7 +14,7 @@ $cubeAwesome: (
   margin: 100px auto;
   //transform: translate3d(0, 0, -#{map-get($cubeAwesome, 'size')/2}px) rotateY(156deg) rotateX(10deg);
   //animation: cubeAwesomeRotate 5s infinite linear;
-  border: 2px dotted white;
+  //border: 2px dotted white;
 
   &-container {
 
@@ -37,8 +37,8 @@ $cubeAwesome: (
       top: 0;
       right: 0;
       bottom: 0;
-      background-color: rgba(blue, 0.1);
-      border: 2px dotted white;
+      background-color: rgba(blue, 0.2);
+      border: 1px dotted white;
       transform-style: preserve-3d;
       transition: transform 0.3s ease 0s;
 

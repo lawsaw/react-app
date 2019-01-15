@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Button from './Button';
 import cx from 'classnames';
-
-const dropdownRoot = document.getElementById('dropdown-root');
+import { isClassComponent, isFunctionComponent, isReactComponent, isElement, isDOMTypeElement, isCompositeTypeElement } from '../../helpers';
 
 export default class extends React.Component {
 
@@ -29,9 +28,11 @@ export default class extends React.Component {
         title: 'Dropdown',
         duration: 300,
         closeOnClick: true,
+        front: 'Dropdown',
     }
 
     componentDidMount() {
+        this.dropdownRoot = document.getElementById('dropdown-root');
         this.setPosition();
         window.addEventListener('click', this.click, false);
         window.addEventListener('resize', this.setPosition, false);
@@ -134,26 +135,27 @@ export default class extends React.Component {
     }
 
     renderFront = () => {
-        const {className, linkAttr, title, button} = this.props;
-        const {classActive} = this.state;
-        const buttonProps = {};
-        Object.keys(this.props).filter(key => (key !== 'button' && key !== 'duration' && key !== 'closeOnClick')).map(key => (
-            buttonProps[key] = this.props[key]
-        ));
-        return button ? (
-            <Button
-                {...buttonProps}
-                className={cx(`dropdownAwesome-front`, classActive, className)}
-                linkAttr={{
-                    ...linkAttr,
-                    ref: el => this.setFrontOptions(el)
-                }}
-            >
-                {title}
-            </Button>
-        )  : <span
-                ref={el => this.setFrontOptions(el)}
-            >{title}</span>
+        const { classActive } = this.state;
+        const { front, className } = this.props;
+        const options = isCompositeTypeElement(front) ? {
+                type: front.type,
+                key: 'Ref',
+                front: front.props.children,
+            } : {
+                type: 'span',
+                key: 'ref',
+                front: front,
+            }
+        const newFront = React.createElement(
+            options.type,
+            {
+                ...front.props,
+                [options.key]: el => this.setFrontOptions(el),
+                className: cx(`dropdownAwesome-front`, classActive, className)
+            },
+            options.front
+        )
+        return newFront;
     }
 
     renderBack = () => {
@@ -176,16 +178,14 @@ export default class extends React.Component {
     }
 
     render() {
-        const {dropdownShow} = this.state;
-        const front = this.renderFront();
-        const back = this.renderBack();
+        const { dropdownShow } = this.state;
         return (
             <React.Fragment>
-                {front}
+                {this.renderFront()}
                 {
                     dropdownShow && ReactDOM.createPortal(
-                        back,
-                        dropdownRoot
+                        this.renderBack(),
+                        this.dropdownRoot
                     )
                 }
             </React.Fragment>

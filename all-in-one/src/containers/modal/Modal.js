@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-const appRoot = document.getElementById('app-root');
-const modalRoot = document.getElementById('modal-root');
-const root = document.getElementById('root');
+// const appRoot = document.getElementById('app-root');
+// const modalRoot = document.getElementById('modal-root');
+// const root = document.getElementById('root');
 
 class Modal extends React.Component {
 
@@ -12,11 +12,17 @@ class Modal extends React.Component {
         classEvent: 'modalAwesome--appearing',
         classStyle: '',
         lock: false,
+        scroll: 0,
     }
 
     constructor(props) {
         super(props);
         this.duration = 500;
+        this.modal = React.createRef();
+
+        this.appRoot = document.getElementById('app-root');
+        this.modalRoot = document.getElementById('modal-root');
+        this.root = document.getElementById('root');
     }
 
     componentDidMount() {
@@ -24,39 +30,80 @@ class Modal extends React.Component {
         this.setState(() => ({
             classStyle: styleAppear
         }));
-        setTimeout(() => {
-            this.setState(() => ({
-                classEvent: '',
-                classStyle: ''
-            }))
-        }, this.duration);
-
+        // setTimeout(() => {
+        //     this.setState(() => ({
+        //         classEvent: '',
+        //         classStyle: ''
+        //     }))
+        // }, this.duration);
         this.freeze();
-    }
-
-    freeze = () => {
-        if(modalRoot.children.length > 0 && appRoot.getAttribute('freezed') === null) {
-            const pos = window.scrollY;
-            appRoot.setAttribute('freezed', pos);
-            appRoot.style.top = `${-pos}px`;
-            root.classList.add('modalActive');
-            console.log(`freeze on ${pos}`);
-        }
-    }
-
-    unFreeze = () => {
-        if(modalRoot.children.length <= 1 && appRoot.getAttribute('freezed').length) {
-            root.classList.remove('modalActive');
-            const pos = Math.abs(parseInt(appRoot.getAttribute('freezed')));
-            appRoot.style.top = '';
-            appRoot.removeAttribute('freezed');
-            window.scrollTo(0, pos);
-            console.log(`unFreeze on ${pos}`);
-        }
     }
 
     componentWillUnmount() {
         this.unFreeze();
+    }
+
+    back = (url) => {
+
+        window.history.pushState(null, null, window.location.href);
+        window.onpopstate = () => {
+            window.history.go(1);
+            //window.onpopstate = null;
+            this.handleClose();
+            console.log('event2');
+        };
+    }
+
+
+    eventListener = (event) => {
+
+        //window.history.pushState(null, null, window.location.pathname);
+        console.log('event');
+        //return false;
+        //this.handleClose();
+
+    }
+
+    freeze = () => {
+        //window.addEventListener('popstate', this.eventListener, false);
+
+        if(this.modalRoot.children.length) {
+            if(this.appRoot.style.top === '') {
+                const pos = window.scrollY;
+                this.appRoot.style.top = `${-pos}px`;
+                this.root.classList.add('modalActive');
+                console.log(`freeze`);
+
+
+
+
+
+            } else {
+                console.log(`not freeze`);
+            }
+
+
+        }
+        this.back(window.location.href);
+        window.scrollTo(0, 0);
+    }
+
+    unFreeze = () => {
+        //window.removeEventListener('popstate', this.eventListener, false);
+        if(this.appRoot.style.top.length) {
+            if(this.modalRoot.children.length <= 1) {
+                this.root.classList.remove('modalActive');
+                const pos = Math.abs(parseInt(this.appRoot.style.top));
+                this.appRoot.style.top = '';
+                window.scrollTo(0, pos);
+                console.log(`unFreeze on ${pos}`);
+                window.onpopstate = null;
+
+            }   else {
+                this.back(window.location.href);
+                console.log(`not unFreeze`);
+            }
+        }
     }
 
     close = () => {
@@ -73,10 +120,12 @@ class Modal extends React.Component {
             classStyle: styleDisappear,
             tag: 'span'
         }));
+
     }
 
     handleClose = () => {
         const { onClose } = this.props;
+        window.scrollTo(0, 0);
         this.close();
         setTimeout(() => {
             onClose();
@@ -92,6 +141,7 @@ class Modal extends React.Component {
                 {
                     className: `modalAwesome ${classStatus} ${classEvent} ${classStyle}`,
                     style: {transitionDuration: `${this.duration/1000}s`},
+                    ref: this.modal
                 },
                 (
                     <React.Fragment>
@@ -125,7 +175,7 @@ class Modal extends React.Component {
     render() {
         return ReactDOM.createPortal(
             this.template(),
-            modalRoot
+            this.modalRoot
         )
     }
 
