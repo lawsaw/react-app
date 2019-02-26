@@ -1,7 +1,7 @@
 $tooltip: (
   'container': '.tooltip',
   'bg': rgba(#000, 0.75),
-  'arrow': 20,
+  'arrow': 10,
 );
 
 
@@ -22,7 +22,7 @@ $tooltip: (
     color: #fff;
     left: 0;
     top: 0;
-    transition: all 0.3s ease 0s;
+    transition: all 0s ease 0s;
 
     &-arrow {
 
@@ -34,7 +34,7 @@ $tooltip: (
       border-left: #{map-get($tooltip, 'arrow')}px solid transparent;
       border-right: #{map-get($tooltip, 'arrow')}px solid transparent;
       border-bottom: #{map-get($tooltip, 'arrow')}px solid map-get($tooltip, 'bg');
-      transition: all 0.3s ease 0s;
+      transition: all 0s ease 0s;
 
       #{map-get($tooltip, 'container')}Back#{map-get($tooltip, 'container')}Back--top & {
 

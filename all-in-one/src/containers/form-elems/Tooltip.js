@@ -5,68 +5,45 @@ import { isCompositeTypeElement } from "../../helpers";
 
 const lodash = require('lodash');
 
-
-const ARROW_SIZE = 20;
+const ARROW_SIZE = 10;
 
 export default class extends React.Component {
 
     static defaultProps = {
-        position: 'top',
         front: 'Tooltip_front',
         classNameFront: [],
         classNameBack: [],
+        duration: 300,
         event: 'click',
     }
 
     constructor(props) {
         super(props);
-        // this.frontendRef = React.createRef();
-        // this.backendRef = React.createRef();
         this.state = {
             active: false,
-            position: this.props.position,
-
+            position: 'top',
+            left: 0,
+            top: 0,
+            duration: 0,
         };
         this.frontend = this.renderFront();
-        this.backend = this.renderBack();
     }
 
     componentDidMount() {
         const { event } = this.props;
         this.root = document.getElementById('tooltip-root');
         window.addEventListener(event, this.trigger, false);
-        // window.addEventListener('resize', this.setPositionWithRule, false);
-        // window.addEventListener('scroll', this.setPositionWithRule, false);
-       //
-        //this.setPosition();
-        // const { left, top } = this.frontendRef.getBoundingClientRect();
-        // this.setState(() => ({
-        //     top,
-        //     left
-        // }))
-        console.log(this.state.left);
-        console.log(this.backendRef);
-
     }
 
     componentWillUnmount() {
         const { event } = this.props;
         window.removeEventListener(event, this.trigger, false);
-        // window.removeEventListener('resize', this.setPositionWithRule, false);
-        // window.removeEventListener('scroll', this.setPositionWithRule, false);
     }
 
     componentDidUpdate(np, st) {
-        if(!lodash.eq(np, this.props)) {
-            console.log('componentDidUpdate props');
+        if(!lodash.isEqual(st, this.state)) {
+            this.setPositionWithRule();
         }
-        if(!lodash.eq(st, this.state)) {
-            console.log('componentDidUpdate state');
-        }
-    }
-
-    componentWillReceiveProps(np) {
-        console.log('componentWillReceiveProps');
     }
 
     isDescendant = (parent, child) => {
@@ -80,13 +57,8 @@ export default class extends React.Component {
         return false;
     }
 
-    setStartPosition = () => {
-        const frontRect = this.frontendRef.getBoundingClientRect();
-
-    }
-
     setPosition = () => {
-        const { left, top, position } = this.getPosition();
+        const { left=0, top=0, position='top' } = this.getPosition();
         this.setState(() => ({
             left, top, position
         }));
@@ -106,27 +78,32 @@ export default class extends React.Component {
               clientRight = window.innerWidth,
               clientBottom = window.innerHeight;
         const topLeftPointsCoords = this.getTopLeftPointsCoords(frontRect, backRect);
-        let coords = {};
+        //let coords = {};
         for(let position in topLeftPointsCoords) {
             let rectangle = this.getRectangle(position, frontRect, backRect);
             if( (rectangle['topLeft'].left >= clientLeft && rectangle['bottomRight'].left <= clientRight) &&
                 (rectangle['topLeft'].top >= clientTop && rectangle['bottomRight'].top <= clientBottom)
             ) {
-                coords = {
+                return {
                     left: topLeftPointsCoords[position].left,
                     top: topLeftPointsCoords[position].top,
                     position
                 };
-                break;
+                //break;
             }
         }
-        // let item = 'rightTop';
+        return {
+            left: topLeftPointsCoords['top'].left,
+            top: topLeftPointsCoords['top'].top,
+            position: 'top'
+        };
+        // let position = 'rightTop';
         // coords = {
-        //     left: topLeftPointsCoords[item].left,
-        //     top: topLeftPointsCoords[item].top,
-        //     position: item
+        //     left: topLeftPointsCoords[position].left,
+        //     top: topLeftPointsCoords[position].top,
+        //     position
         // };,
-        return coords;
+        //return coords;
     }
 
     getTopLeftPointsCoords = (frontend, backend) => ({
@@ -204,10 +181,10 @@ export default class extends React.Component {
 
     trigger = (e) => {
         const { active } = this.state;
-        const clickedElement = e.target;
-        if(clickedElement === this.backendRef || this.isDescendant(this.backendRef, clickedElement)) {
+        const triggeredElement = e.target;
+        if(triggeredElement === this.backendRef || this.isDescendant(this.backendRef, triggeredElement)) {
             //console.log('backend');
-        } else if(clickedElement === this.frontendRef || this.isDescendant(this.frontendRef, clickedElement)) {
+        } else if(triggeredElement === this.frontendRef || this.isDescendant(this.frontendRef, triggeredElement)) {
             if(active) {
                 //console.log('frontend & active');
             } else {
@@ -215,7 +192,9 @@ export default class extends React.Component {
                 this.open();
             }
         } else {
-            this.close();
+            if(active) {
+                this.close();
+            }
         }
     }
 
@@ -224,24 +203,21 @@ export default class extends React.Component {
             active: true
         }));
         this.setPositionWithRule();
+        setTimeout(() => {
+            this.setState(() => ({
+                duration: this.props.duration
+            }));
+        }, this.props.duration);
+        window.addEventListener('resize', this.setPositionWithRule, false);
+        window.addEventListener('scroll', this.setPositionWithRule, false);
     }
 
     close = () => {
+        window.removeEventListener('resize', this.setPositionWithRule, false);
+        window.removeEventListener('scroll', this.setPositionWithRule, false);
         this.setState(() => ({
             active: false
-        }))
-    }
-
-    setFrontOptions = (frontElement) => {
-        if(frontElement) {
-            this.frontendRef = frontElement;
-        }
-    }
-
-    setBackOptions = (backElement) => {
-        if(backElement) {
-            this.backendRef = backElement;
-        }
+        }));
     }
 
     renderFront = () => {
@@ -260,7 +236,7 @@ export default class extends React.Component {
             options.type,
             {
                 ...front.props,
-                [options.key]: el => this.setFrontOptions(el),
+                [options.key]: el => this.frontendRef = el,
                 className: cx(`tooltipFront`, classNameFront, active && `tooltipFront--active`)
             },
             options.front
@@ -268,7 +244,7 @@ export default class extends React.Component {
     }
 
     renderBack = () => {
-        const { active, position, left, top } = this.state;
+        const { active, position, left, top, duration } = this.state;
         const { children: back, classNameBack } = this.props;
         return React.createElement(
             'div',
@@ -277,8 +253,9 @@ export default class extends React.Component {
                 style: {
                     left: `${left}px`,
                     top: `${top}px`,
+                    transitionDuration: `${duration/1000}s`,
                 },
-                ref: el => this.setBackOptions(el),
+                ref: el => this.backendRef = el,
                 className: cx(`tooltipBack`, classNameBack, active && `tooltipBack--active`, `tooltipBack--${position}`)
             },
             <React.Fragment>
@@ -295,13 +272,8 @@ export default class extends React.Component {
         );
     }
 
-    updateBackPosition = () => {
-
-    }
-
     render() {
         const { active } = this.state;
-        console.log('render');
         const backend = this.renderBack();
         return (
             <React.Fragment>
