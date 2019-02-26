@@ -4,6 +4,7 @@ import Svg from "./Svg";
 import Button from "./Button";
 import {Link} from "react-router-dom";
 import CustomLink from "./CustomLink";
+import Tooltip from "./Tooltip";
 
 export default class extends Component {
 
@@ -18,7 +19,13 @@ export default class extends Component {
                 <Dropdown>
                     dropdown with no props at all
                 </Dropdown>
-
+                <Tooltip
+                    front={'tooltip'}
+                    event={'mousemove'}
+                >
+                    Some back content for tooltip<br />
+                    Some back content for tooltip
+                </Tooltip>
                 <Dropdown
                     front={<strong><i>tags</i> <i>front</i></strong>}
                 >
@@ -111,6 +118,34 @@ export default class extends Component {
                 >
                     Just Button
                 </Button>
+
+                <Tooltip
+                    front={'tooltip'}
+                >
+                    Some back content for tooltip
+                </Tooltip>
+
+                <div>
+                    <Tooltip
+                        front={<Button
+                            className='megaclass'
+                            test='56566'
+                            href='#suka'
+                            size='L'
+                            linkAttr={{
+                                'fuck': 6466
+                            }}
+                            iconAfter={{
+                                type: 'fab',
+                                value: 'android',
+                            }}
+                        >
+                            Открыть Тултип
+                        </Button>}
+                    >
+                        Some back content for tooltip
+                    </Tooltip>
+                </div>
 
             </div>
         )

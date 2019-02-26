@@ -11,6 +11,7 @@ import FormElems from './form-elems/FormElems';
 import { Route, Link, BrowserRouter, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from '../store/configureStore';
+import Tooltip from "./form-elems/Tooltip";
 
 
 export default class extends Component {
@@ -26,6 +27,11 @@ export default class extends Component {
                                     <div className={`container wrap-container`}>
                                         <div className={`row wrap-row`}>
                                             <div className={`col-5 wrap-menu`}>
+                                                <Tooltip
+                                                    front={'tooltip'}
+                                                >
+                                                    Some back content for tooltip
+                                                </Tooltip>
                                                 <ul>
                                                     <li><Link to='/'>Домой</Link></li>
                                                     <li><Link to='/clock'>Часы</Link></li>
@@ -34,6 +40,12 @@ export default class extends Component {
                                                     <li><Link to='/modals'>Модалки</Link></li>
                                                     <li><Link to='/form-elems'>Элементы форм</Link></li>
                                                 </ul>
+                                                <Tooltip
+                                                    front={'tooltip'}
+                                                >
+                                                    Some back content for tooltip<br />
+                                                    Some back content for tooltip
+                                                </Tooltip>
                                             </div>
                                             <div className={`col-7 wrap-page`}>
                                                 <div className={`page`}>
@@ -57,6 +69,7 @@ export default class extends Component {
                 </div>
                 <div id="modal-root" />
                 <div id="dropdown-root" />
+                <div id="tooltip-root" />
             </React.Fragment>
         )
     }

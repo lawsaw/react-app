@@ -1,0 +1,136 @@
+$tooltip: (
+  'container': '.tooltip',
+  'bg': rgba(#000, 0.75),
+  'arrow': 20,
+);
+
+
+#{map-get($tooltip, 'container')} {
+
+  &Front {
+
+    background-color: rgba(lightblue, 0.75);
+
+  }
+
+  &Back {
+
+    position: fixed;
+    background-color: map-get($tooltip, 'bg');
+    //border-radius: 10px;
+    padding: 10px;
+    color: #fff;
+    left: 0;
+    top: 0;
+    transition: all 0.3s ease 0s;
+
+    &-arrow {
+
+      position: absolute;
+      top: -#{map-get($tooltip, 'arrow')}px;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: #{map-get($tooltip, 'arrow')}px solid transparent;
+      border-right: #{map-get($tooltip, 'arrow')}px solid transparent;
+      border-bottom: #{map-get($tooltip, 'arrow')}px solid map-get($tooltip, 'bg');
+      transition: all 0.3s ease 0s;
+
+      #{map-get($tooltip, 'container')}Back#{map-get($tooltip, 'container')}Back--top & {
+
+        left: 50%;
+        top: 100%;
+        transform: translate3d(-50%, 0, 0) rotateZ(180deg);
+
+      }
+
+      #{map-get($tooltip, 'container')}Back#{map-get($tooltip, 'container')}Back--topLeft & {
+
+        left: 100%;
+        top: 100%;
+        transform: translate3d(-100%, 0, 0) rotateZ(180deg);
+
+      }
+
+      #{map-get($tooltip, 'container')}Back#{map-get($tooltip, 'container')}Back--topRight & {
+
+        left: 0;
+        top: 100%;
+        transform: translate3d(0, 0, 0) rotateZ(180deg);
+
+      }
+
+      #{map-get($tooltip, 'container')}Back#{map-get($tooltip, 'container')}Back--bottom & {
+
+        left: 50%;
+        transform: translate3d(-50%, 0, 0);
+
+      }
+
+      #{map-get($tooltip, 'container')}Back#{map-get($tooltip, 'container')}Back--bottomLeft & {
+
+        left: 100%;
+        transform: translate3d(-100%, 0, 0);
+
+      }
+
+      #{map-get($tooltip, 'container')}Back#{map-get($tooltip, 'container')}Back--bottomRight & {
+
+        left: 0;
+        transform: translate3d(0, 0, 0);
+
+      }
+
+      #{map-get($tooltip, 'container')}Back#{map-get($tooltip, 'container')}Back--left & {
+
+        left: 100%;
+        top: 50%;
+        transform: translate3d(-25%, -50%, 0) rotateZ(90deg);
+
+      }
+
+      #{map-get($tooltip, 'container')}Back#{map-get($tooltip, 'container')}Back--leftTop & {
+
+        left: 100%;
+        top: 100%;
+        transform: translate3d(-25%, -150%, 0) rotateZ(90deg);
+
+      }
+
+      #{map-get($tooltip, 'container')}Back#{map-get($tooltip, 'container')}Back--leftBottom & {
+
+        left: 100%;
+        top: 0;
+        transform: translate3d(-25%, 50%, 0) rotateZ(90deg);
+
+      }
+
+      #{map-get($tooltip, 'container')}Back#{map-get($tooltip, 'container')}Back--right & {
+
+        left: 0;
+        top: 50%;
+        transform: translate3d(-75%, -50%, 0) rotateZ(-90deg);
+
+      }
+
+      #{map-get($tooltip, 'container')}Back#{map-get($tooltip, 'container')}Back--rightTop & {
+
+        left: 0;
+        top: 0;
+        transform: translate3d(-75%, 50%, 0) rotateZ(-90deg);
+
+      }
+
+      #{map-get($tooltip, 'container')}Back#{map-get($tooltip, 'container')}Back--rightBottom & {
+
+        left: 0;
+        top: 100%;
+        transform: translate3d(-75%, -150%, 0) rotateZ(-90deg);
+
+      }
+
+    }
+
+  }
+
+}
