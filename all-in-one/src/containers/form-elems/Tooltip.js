@@ -42,7 +42,9 @@ export default class extends React.Component {
 
     componentDidUpdate(np, st) {
         if(!lodash.isEqual(st, this.state)) {
-            this.setPositionWithRule();
+            if(this.state.active) {
+                this.setPosition();
+            }
         }
     }
 
@@ -58,16 +60,10 @@ export default class extends React.Component {
     }
 
     setPosition = () => {
-        const { left=0, top=0, position='top' } = this.getPosition();
+        const { left, top, position } = this.getPosition();
         this.setState(() => ({
             left, top, position
         }));
-    }
-
-    setPositionWithRule = () => {
-        if(this.state.active) {
-            this.setPosition();
-        }
     }
 
     getPosition = () => {
@@ -202,21 +198,22 @@ export default class extends React.Component {
         this.setState(() => ({
             active: true
         }));
-        this.setPositionWithRule();
+        this.setPosition();
         setTimeout(() => {
             this.setState(() => ({
                 duration: this.props.duration
             }));
         }, this.props.duration);
-        window.addEventListener('resize', this.setPositionWithRule, false);
-        window.addEventListener('scroll', this.setPositionWithRule, false);
+        window.addEventListener('resize', this.setPosition, false);
+        window.addEventListener('scroll', this.setPosition, false);
     }
 
     close = () => {
-        window.removeEventListener('resize', this.setPositionWithRule, false);
-        window.removeEventListener('scroll', this.setPositionWithRule, false);
+        window.removeEventListener('resize', this.setPosition, false);
+        window.removeEventListener('scroll', this.setPosition, false);
         this.setState(() => ({
-            active: false
+            active: false,
+            duration: 0
         }));
     }
 
