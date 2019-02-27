@@ -1,0 +1,30 @@
+<div class="tooltipFront">
+    tooltip with hover
+    <div class="tooltipBack">
+        Content
+    </div>
+</div>
+
+<div class="tooltipFront" event="click">
+    tooltip with click<br>
+    tooltip front<br>
+    tooltip front<br>
+    tooltip front<br>
+    <div class="tooltipBack">
+        <h2>Some title</h2>
+        <p>A very big content of tooltip</p>
+        <p>A very big content of tooltip</p>
+        <p>A very big content of tooltip</p>
+        <p>A very big content of tooltip</p>
+        <p>A very big content of tooltip</p>
+        <p>A very big content of tooltip</p>
+    </div>
+</div>
+
+<script src="tooltip.js" />
+
+<script>
+
+    for(let tooltip of document.getElementsByClassName('tooltipFront')) new Tooltip(tooltip, tooltip.getAttribute('event'));
+
+</script>
