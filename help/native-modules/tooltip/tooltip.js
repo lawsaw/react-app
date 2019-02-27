@@ -1,16 +1,15 @@
 class Tooltip {
 
-    constructor(component, event) {
+    constructor(component) {
         this.arrow_size = 10;
         this.root = document.getElementById('tooltip-root');
         this.left = 0;
         this.top = 0;
         this.position = 'top';
+        this.duration = 300;
         this.frontend = component;
-        this.backendNative = this.getBackComponent(component, 'tooltipBack');
-        this.backend = null;
         this.active = false;
-        this.event = event || 'mousemove';
+        this.event = component.getAttribute('event') || 'mousemove';
         this.positions = [
             'top', 'bottom', 'left', 'right', 'topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'leftTop', 'leftBottom', 'rightTop', 'rightBottom'
         ];
@@ -22,12 +21,13 @@ class Tooltip {
     }
 
     unmount = () => {
+        this.close();
         window.removeEventListener(this.event, this.trigger, false);
     }
 
     getBackComponent = (component, targetClassName) => {
         for(let child of component.children) for(let classListItem of child.classList) if(classListItem === targetClassName) return child;
-        return null;
+        return null; //There is no tooltipBack in HTML...
     }
 
     trigger = (e) => {
@@ -63,14 +63,15 @@ class Tooltip {
 
     updateDuration = (duration) => {
         this.backend.style.transitionDuration = `${duration/1000}s`;
+        this.arrow.style.transitionDuration = `${duration/1000}s`;
     }
 
     open = () => {
         this.renderBack();
         this.active = true;
         setTimeout(() => {
-            this.updateDuration(300)
-        }, 300);
+            this.updateDuration(this.duration)
+        }, this.duration);
         window.addEventListener('resize', this.setPosition, false);
         window.addEventListener('scroll', this.setPosition, false);
         this.setPosition();
@@ -85,8 +86,9 @@ class Tooltip {
     }
 
     renderBack = () => {
-        const arrow = document.createElement('div');
-        arrow.classList.add('tooltipBack-arrow');
+        const backendNative = this.getBackComponent(this.frontend, 'tooltipBack');
+        this.arrow = document.createElement('div');
+        this.arrow.classList.add('tooltipBack-arrow');
         const closeButton = document.createElement('button');
         closeButton.innerText = 'Close';
         closeButton.onclick = this.close;
@@ -95,11 +97,11 @@ class Tooltip {
         toolbar.appendChild(closeButton);
         const content = document.createElement('div');
         content.classList.add('tooltipBack-content');
-        content.innerHTML = this.backendNative.innerHTML;
-        this.backend = this.backendNative.cloneNode(false);
+        content.innerHTML = backendNative.innerHTML;
+        this.backend = backendNative.cloneNode(false);
         this.backend.classList.add(`tooltipBack--${this.position}`);
         this.backend.appendChild(toolbar);
-        this.backend.appendChild(arrow);
+        this.backend.appendChild(this.arrow);
         this.backend.appendChild(content);
         this.root.appendChild(this.backend);
     }
@@ -185,19 +187,19 @@ class Tooltip {
         },
         leftTop: {
             left: frontend.left - backend.width - this.arrow_size,
-            top: frontend.top + frontend.height - backend.height + this.arrow_size / 2,
+            top: frontend.top + frontend.height - backend.height,
         },
         leftBottom: {
             left: frontend.left - backend.width - this.arrow_size,
-            top: frontend.top - this.arrow_size / 2,
+            top: frontend.top,
         },
         rightTop: {
             left: frontend.left + frontend.width + this.arrow_size,
-            top: frontend.top - this.arrow_size / 2,
+            top: frontend.top,
         },
         rightBottom: {
             left: frontend.left + frontend.width + this.arrow_size,
-            top: frontend.top + frontend.height - backend.height + this.arrow_size / 2,
+            top: frontend.top + frontend.height - backend.height,
         },
     });
 
