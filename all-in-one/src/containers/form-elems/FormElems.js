@@ -120,7 +120,7 @@ export default class extends Component {
                 </Button>
 
                 <Tooltip
-                    front={'tooltip'}
+                    front={<div><div>big</div><div>front</div><div>tooltip</div></div>}
                 >
                     Some back content for tooltip
                 </Tooltip>

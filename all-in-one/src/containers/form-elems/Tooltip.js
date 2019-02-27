@@ -74,7 +74,6 @@ export default class extends React.Component {
               clientRight = window.innerWidth,
               clientBottom = window.innerHeight;
         const topLeftPointsCoords = this.getTopLeftPointsCoords(frontRect, backRect);
-        //let coords = {};
         for(let position in topLeftPointsCoords) {
             let rectangle = this.getRectangle(position, frontRect, backRect);
             if( (rectangle['topLeft'].left >= clientLeft && rectangle['bottomRight'].left <= clientRight) &&
@@ -85,21 +84,14 @@ export default class extends React.Component {
                     top: topLeftPointsCoords[position].top,
                     position
                 };
-                //break;
             }
         }
+        const defaultPosition = 'top';
         return {
-            left: topLeftPointsCoords['top'].left,
-            top: topLeftPointsCoords['top'].top,
-            position: 'top'
+            left: topLeftPointsCoords[defaultPosition].left,
+            top: topLeftPointsCoords[defaultPosition].top,
+            position: defaultPosition
         };
-        // let position = 'rightTop';
-        // coords = {
-        //     left: topLeftPointsCoords[position].left,
-        //     top: topLeftPointsCoords[position].top,
-        //     position
-        // };,
-        //return coords;
     }
 
     getTopLeftPointsCoords = (frontend, backend) => ({
@@ -224,17 +216,19 @@ export default class extends React.Component {
                 type: front.type,
                 key: 'Ref',
                 front: front.props.children,
+                className: ['tooltipFront--composite'],
             } : {
                 type: 'span',
                 key: 'ref',
                 front: front,
+                className: ['tooltipFront--primitive'],
             };
         return React.createElement(
             options.type,
             {
                 ...front.props,
                 [options.key]: el => this.frontendRef = el,
-                className: cx(`tooltipFront`, classNameFront, active && `tooltipFront--active`)
+                className: cx(`tooltipFront`, classNameFront, options.className, active && `tooltipFront--active`)
             },
             options.front
         )
@@ -263,7 +257,12 @@ export default class extends React.Component {
                         onClick={this.close}
                     >Close</button>
                 </div>
-                <div className={cx(`tooltipBack-arrow`)}></div>
+                <div
+                    className={cx(`tooltipBack-arrow`)}
+                    style={{
+                        transitionDuration: `${duration/1000}s`,
+                    }}
+                ></div>
                 {back}
             </React.Fragment>
         );

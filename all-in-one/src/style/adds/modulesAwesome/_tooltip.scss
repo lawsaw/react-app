@@ -11,13 +11,20 @@ $tooltip: (
 
     background-color: rgba(lightblue, 0.75);
 
+    &--primitive {
+
+      display: inline-block;
+
+    }
+
+    &--composite {}
+
   }
 
   &Back {
 
     position: fixed;
     background-color: map-get($tooltip, 'bg');
-    //border-radius: 10px;
     padding: 10px;
     color: #fff;
     left: 0;
