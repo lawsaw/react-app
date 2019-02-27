@@ -1,9 +1,20 @@
 $tooltip: (
-  'container': '.tooltip',
-  'bg': rgba(#000, 0.75),
-  'arrow': 10,
+        'container': '.tooltip',
+        'bg': rgba(#000, 0.75),
+        'arrow': 10,
 );
 
+.container {
+
+  min-width: 800px;
+
+}
+
+body {
+
+  overflow-x: visible;
+
+}
 
 #{map-get($tooltip, 'container')} {
 
@@ -11,7 +22,8 @@ $tooltip: (
 
     background-color: rgba(lightblue, 0.75);
 
-    &--primitive {
+    &--primitive,
+    &--inline {
 
       display: inline-block;
 

@@ -86,16 +86,16 @@ class Tooltip {
 
     renderBack = () => {
         const arrow = document.createElement('div');
-            arrow.classList.add('tooltipBack-arrow');
+        arrow.classList.add('tooltipBack-arrow');
         const closeButton = document.createElement('button');
-            closeButton.innerText = 'Close';
-            closeButton.onclick = this.close;
+        closeButton.innerText = 'Close';
+        closeButton.onclick = this.close;
         const toolbar = document.createElement('div');
-            toolbar.classList.add('tooltipBack-toolbar');
-            toolbar.appendChild(closeButton);
+        toolbar.classList.add('tooltipBack-toolbar');
+        toolbar.appendChild(closeButton);
         const content = document.createElement('div');
-            content.classList.add('tooltipBack-content');
-            content.innerHTML = this.backendNative.innerHTML;
+        content.classList.add('tooltipBack-content');
+        content.innerHTML = this.backendNative.innerHTML;
         this.backend = this.backendNative.cloneNode(false);
         this.backend.classList.add(`tooltipBack--${this.position}`);
         this.backend.appendChild(toolbar);
