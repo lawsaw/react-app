@@ -1,0 +1,129 @@
+$dashboard: (
+  'container': '.dashboard',
+  'space': 10,
+);
+
+@mixin setAbsSpace($value) {
+  top: $value;
+  bottom: $value;
+  left: $value;
+  right: $value;
+}
+
+#{map-get($dashboard, 'container')} {
+
+  position: relative;
+  padding: 15px;
+  border: 2px solid blue;
+  height: 800px;
+
+  &Window {
+
+    position: absolute;
+    @include setAbsSpace(#{map-get($dashboard, 'space')}px);
+    border: 2px solid green;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+}
+
+#{map-get($dashboard, 'container')}Toolbar {
+
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  opacity: 0;
+  transform: translate3d(0, -100%, 0);
+  transition: all 0.3s ease 0s;
+  background-color: lightgreen;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  opacity: 1;
+  transform: none;
+
+  #{map-get($dashboard, 'container')}Window:hover & {
+
+    opacity: 1;
+    transform: none;
+
+  }
+
+  &-item {
+
+    cursor: pointer;
+    &:not(:last-child) {
+
+      content: '|';
+      margin: 0 15px;
+
+    }
+
+  }
+
+}
+
+
+#{map-get($dashboard, 'container')}Grid {
+
+  position: absolute;
+  @include setAbsSpace(#{map-get($dashboard, 'space')}px);
+  //border: 2px solid red;
+
+  &-item {
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border: 2px solid red;
+
+    #{map-get($dashboard, 'container')}Grid--row > & {
+
+      width: 50%;
+
+      &:first-child {
+
+        left: 0;
+        right: auto
+
+      }
+
+      &:last-child {
+
+        right: 0;
+        left: auto;
+
+      }
+
+    }
+
+    #{map-get($dashboard, 'container')}Grid--col > & {
+
+      height: 50%;
+
+      &:first-child {
+
+        top: 0;
+        bottom: auto
+
+      }
+
+      &:last-child {
+
+        bottom: 0;
+        top: auto;
+
+      }
+
+    }
+
+  }
+
+}

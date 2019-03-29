@@ -5,6 +5,7 @@ import Page404 from './Page404';
 import Clock from './Clock';
 import Dice from './dice/Dice';
 import TicTacToe from './TicTacToe';
+import { Dashboard } from './dashboard';
 import TestModal from './modal/TestModal';
 import FormElems from './form-elems/FormElems';
 
@@ -26,7 +27,7 @@ export default class extends Component {
                                 <div className={`wrap`}>
                                     <div className={`container wrap-container`}>
                                         <div className={`row wrap-row`}>
-                                            <div className={`col-5 wrap-menu`}>
+                                            <div className={`col-3 wrap-menu`}>
                                                 <Tooltip
                                                     front={'tooltip'}
                                                 >
@@ -39,6 +40,7 @@ export default class extends Component {
                                                     <li><Link to='/tic-tac-toe'>Крестики-нолики</Link></li>
                                                     <li><Link to='/modals'>Модалки</Link></li>
                                                     <li><Link to='/form-elems'>Элементы форм</Link></li>
+                                                    <li><Link to='/dashboard'>Дашборд</Link></li>
                                                 </ul>
                                                 <Tooltip
                                                     front={'tooltip'}
@@ -47,7 +49,7 @@ export default class extends Component {
                                                     Some back content for tooltip
                                                 </Tooltip>
                                             </div>
-                                            <div className={`col-7 wrap-page`}>
+                                            <div className={`col-9 wrap-page`}>
                                                 <div className={`page`}>
                                                     <Switch>
                                                         <Route exact path='/' component={Main} />
@@ -56,6 +58,7 @@ export default class extends Component {
                                                         <Route path='/tic-tac-toe' component={TicTacToe} />
                                                         <Route path='/modals' component={TestModal} />
                                                         <Route path='/form-elems' component={FormElems} />
+                                                        <Route path='/dashboard' component={Dashboard} />
                                                         <Route path='/:page/' render={(props) => <Page404 page={props.match.params.page} />} />
                                                     </Switch>
                                                 </div>
