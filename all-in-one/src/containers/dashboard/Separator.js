@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import cx from "classnames";
 
 export default class extends Component {
 
@@ -13,8 +12,8 @@ export default class extends Component {
 
     render() {
         return(
-            <div className={cx(`dashboardWindow`)}>
-                {this.props.children}
+            <div className="dashboardSeparator">
+
             </div>
         )
     }

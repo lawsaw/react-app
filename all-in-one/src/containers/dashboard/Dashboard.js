@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Window, Grid } from './';
+import Dice from '../dice/Dice';
 
 export default class extends Component {
 
@@ -8,25 +9,51 @@ export default class extends Component {
     }
 
     state = {
+        data: {
+            type: 'col',
+            size: 30,
+            content: [
+                1,
+                {
+                    type: 'row',
+                    size: 35,
+                    content: [
+                        {
+                            type: 'col',
+                            size: 80,
+                            content: [
+                                {
+                                    type: 'col',
+                                    content: [
+                                        1,
+                                        5
+                                    ]
+                                },
+                                5
+                            ]
+                        },
+                        5
+                    ]
+                }
+            ]
+        }
+    }
 
+    renderGrid = (type, content, size) => {
+        return <Grid
+            type={type}
+            content={content}
+            size={size}
+            renderGrid={this.renderGrid}
+        />
     }
 
     render() {
+        const { data } = this.state;
+        let grid = this.renderGrid(data.type, data.content, data.size);
         return(
             <div className="dashboard">
-                <Grid
-                    type={`row`}
-                    content={[
-                        3,
-                        <Grid
-                            type={`col`}
-                            content={[
-                                3,
-                                5
-                            ]}
-                        />
-                    ]}
-                />
+                {grid}
             </div>
         )
     }
